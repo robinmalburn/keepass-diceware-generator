@@ -18,6 +18,12 @@ namespace DicewareGenerator.Repositories
     public interface IDicewareRepository
     {      
         /// <summary>
+        /// Get the index length for the given repository type.
+        /// </summary>
+        /// <returns>The require length of the repository's index.</returns>
+        DicewareIndexLength GetIndexLength();
+        
+        /// <summary>
         /// Add search criteria for an index.
         /// </summary>
         /// <param name="index">The diceware index to search for</param>

@@ -22,5 +22,10 @@ namespace DicewareGenerator.Repositories
         {
            PopulateData(DicewareFileType.Short);
         }
+        
+        public override DicewareIndexLength GetIndexLength()
+        {
+            return DicewareIndexLength.Short;
+        }
     }
 }

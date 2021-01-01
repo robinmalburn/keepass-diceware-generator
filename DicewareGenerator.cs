@@ -46,7 +46,7 @@ namespace DicewareGenerator
             
             for (int i = 0 ; i < 6; i++)
             {
-                repo.SearchByIndices(GetIndexString(crsRandomSource, 4));
+                repo.SearchByIndices(GetIndexString(crsRandomSource, (int)repo.GetIndexLength()));
             }
             
             string pwd = string.Join(" ", repo.Get());
@@ -79,11 +79,11 @@ namespace DicewareGenerator
         /// <param name="crsRandomSource">KeePass cryptographic random number generator.</param>
         /// <param name="len">The legnth of the string to generate</param>
         /// <returns></returns>
-        protected string GetIndexString(CryptoRandomStream crsRandomSource, ulong len)
+        protected string GetIndexString(CryptoRandomStream crsRandomSource, int len)
         {
             ulong[] indices = new ulong[len];
             
-            for (ulong i = 0; i < len; i++) 
+            for (int i = 0; i < len; i++) 
             {
                 indices[i] = GetRandomIndex(crsRandomSource, DICE_SIZE);
             }
