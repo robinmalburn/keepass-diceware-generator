@@ -30,6 +30,8 @@ namespace DicewareGenerator
             }
            );
         
+        protected static IDicewareRepository m_repository;
+        
         public override string Name
         {
             get { return "Diceware Generator"; }
@@ -42,7 +44,7 @@ namespace DicewareGenerator
         
         public override ProtectedString Generate(PwProfile prf, CryptoRandomStream crsRandomSource)
         {
-            FileShortDicewareRepository repo = new FileShortDicewareRepository();
+            IDicewareRepository repo = GetRepository();
             
             for (int i = 0 ; i < 6; i++)
             {
@@ -52,6 +54,19 @@ namespace DicewareGenerator
             string pwd = string.Join(" ", repo.Get());
             
             return new ProtectedString(false, pwd);
+        }
+        
+        /// <summary>
+        /// Get the Diceware Repository instance.
+        /// </summary>
+        /// <returns>Returns an instance of the Diceware repository.</returns>
+        protected IDicewareRepository GetRepository()
+        {
+            if (m_repository == null) {
+                m_repository = new FileShortDicewareRepository();
+            }
+            
+            return m_repository;
         }
 
         /// <summary>
