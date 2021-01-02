@@ -41,6 +41,8 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -49,13 +51,20 @@
   <ItemGroup>
     <Compile Include="DicewareGenerator.cs" />
     <Compile Include="DicewareGeneratorExt.cs" />
+    <Compile Include="Models\Config.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\AbstractFileDicewareRepository.cs" />
     <Compile Include="Repositories\DicewareEnums.cs" />
-    <Compile Include="Repositories\ShortFileDicewareRepository.cs" />
     <Compile Include="Repositories\IDicewareRepository.cs" />
+    <Compile Include="Repositories\ShortFileDicewareRepository.cs" />
+    <Compile Include="UI\Options.cs" />
+    <Compile Include="UI\Options.Designer.cs">
+      <DependentUpon>Options.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Models" />
+    <Folder Include="UI" />
     <Folder Include="Repositories" />
     <Folder Include="Resources" />
   </ItemGroup>
@@ -63,6 +72,11 @@
     <None Include=".gitignore" />
     <None Include="LICENSE" />
     <None Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UI\Options.resx">
+      <DependentUpon>Options.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

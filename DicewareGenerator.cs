@@ -8,7 +8,9 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 using System;
+using DicewareGenerator.UI;
 using DicewareGenerator.Repositories;
+using DicewareGenerator.Models;
 using KeePassLib;
 using KeePassLib.Cryptography;
 using KeePassLib.Cryptography.PasswordGenerator;
@@ -42,18 +44,35 @@ namespace DicewareGenerator
             get { return m_uuid; }
         }
         
+        public override bool SupportsOptions
+        {
+            get { return true; }
+        }
+        
         public override ProtectedString Generate(PwProfile prf, CryptoRandomStream crsRandomSource)
         {
             IDicewareRepository repo = GetRepository();
             
-            for (int i = 0 ; i < 6; i++)
+            Config config = Config.deserialize(prf.CustomAlgorithmOptions);
+            
+            for (int i = 0 ; i < config.NumberOfWords; i++)
             {
                 repo.SearchByIndices(GetIndexString(crsRandomSource, (int)repo.GetIndexLength()));
             }
             
+            
             string pwd = string.Join(" ", repo.Get());
             
             return new ProtectedString(false, pwd);
+        }
+        
+        public override string GetOptions(string strCurrentOptions)
+        {
+            Config config = Config.deserialize(strCurrentOptions);
+            Options options = new Options(config);
+            options.ShowDialog();
+            
+            return Config.serialize(config);
         }
         
         /// <summary>
