@@ -22,6 +22,8 @@ namespace DicewareGenerator.Models
         
         public decimal NumberOfWords = 6;
         
+        public bool StudlyCaps = false;
+        
         public Config()
         {
             
@@ -31,7 +33,8 @@ namespace DicewareGenerator.Models
         {   
             string[] values = {
                 Config.SIGNATURE,
-                string.Format("NumberOfWords:{0}", config.NumberOfWords)
+                string.Format("NumberOfWords:{0}", config.NumberOfWords),
+                string.Format("StudlyCaps:{0}", config.StudlyCaps ? "1" : "0")
             };
             
             return string.Join(Environment.NewLine, values);
@@ -59,6 +62,9 @@ namespace DicewareGenerator.Models
                     switch (key) {
                         case "NumberOfWords":
                             decimal.TryParse(values[key], out config.NumberOfWords);
+                            break;
+                        case "StudlyCaps":
+                            config.StudlyCaps = values[key] == "1";
                             break;
                     }
                 }

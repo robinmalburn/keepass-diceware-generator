@@ -32,6 +32,7 @@ namespace DicewareGenerator.UI
             m_config = config;
             
             uxNumberOfWords.Value = config.NumberOfWords;
+            uxStudlyCapsCheckBox.Checked = config.StudlyCaps;
         }
         
         void UxCancelBtnClick(object sender, EventArgs e)
@@ -42,8 +43,10 @@ namespace DicewareGenerator.UI
         void UxSaveBtnClick(object sender, EventArgs e)
         {
             m_config.NumberOfWords = uxNumberOfWords.Value;
+            m_config.StudlyCaps = uxStudlyCapsCheckBox.Checked;
             
             Close();
         }
+
     }
 }
