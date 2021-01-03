@@ -137,7 +137,7 @@ namespace DicewareGenerator.UI
             this.uxStudlyCapsCheckBox.Name = "uxStudlyCapsCheckBox";
             this.uxStudlyCapsCheckBox.Size = new System.Drawing.Size(296, 24);
             this.uxStudlyCapsCheckBox.TabIndex = 2;
-            this.uxStudlyCapsCheckBox.Text = "Use Studly Caps for generated password?";
+            this.uxStudlyCapsCheckBox.Text = "Use an upper case letter for the first letter of each word?";
             this.uxStudlyCapsCheckBox.UseVisualStyleBackColor = true;
             // 
             // Options
