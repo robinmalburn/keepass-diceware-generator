@@ -8,8 +8,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using DicewareGenerator.Generators;
 using DicewareGenerator.UI;
 using DicewareGenerator.Repositories;
 using DicewareGenerator.Models;
@@ -23,7 +22,7 @@ namespace DicewareGenerator
     /// <summary>
     /// Diceware based password generator class.
     /// </summary>
-    public class DicewareGenerator: CustomPwGenerator
+    public class DicewarePwGenerator: CustomPwGenerator
     {
         const ulong DICE_SIZE = 6;
         
@@ -53,24 +52,12 @@ namespace DicewareGenerator
         
         public override ProtectedString Generate(PwProfile prf, CryptoRandomStream crsRandomSource)
         {
-            IDicewareRepository repo = GetRepository();
-            
             Config config = Config.deserialize(prf.CustomAlgorithmOptions);
             
-            for (int i = 0 ; i < config.NumberOfWords; i++) {
-                repo.SearchByIndices(GetIndexString(crsRandomSource, (int)repo.GetIndexLength()));
-            }
-            
-            List<string> words = repo.Get();
-            
-            if (config.StudlyCaps) {
-                words = words.Select(word => word.First().ToString().ToUpper() + word.Substring(1)).ToList();
-            }
-            
-            
-            string pwd = string.Join(" ", words);
-            
-            return new ProtectedString(false, pwd);
+            IDicewareRepository repo = GetRepository(config, crsRandomSource);
+            IPhraseGenerator generator = new PhraseGenerator(config, repo);
+
+            return generator.Generate();
         }
         
         public override string GetOptions(string strCurrentOptions)
@@ -85,51 +72,18 @@ namespace DicewareGenerator
         /// <summary>
         /// Get the Diceware Repository instance.
         /// </summary>
+        /// <param name="config">The plugin configuration.</param>
+        /// <param name="cryptoRandom">Cryptographic random range.</param>
         /// <returns>Returns an instance of the Diceware repository.</returns>
-        protected IDicewareRepository GetRepository()
+        protected IDicewareRepository GetRepository(Config config, CryptoRandomStream cryptoRandom)
         {
-            if (m_repository == null) {
-                m_repository = new FileShortDicewareRepository();
-            }
+            IDicewareRepositoryFactory repo = new DicewareRepositoryFactory(config);
+                
+            m_repository = repo.Make(cryptoRandom);
             
             return m_repository;
         }
 
-        /// <summary>
-        /// Get a random index for the wordlist.
-        /// </summary>
-        /// <param name="crsRandomSource">KeePass cryptographic random number generator.</param>
-        /// <param name="max">Max valid random number (inclusive)</param>
-        /// <returns>Returns a random number between 1 and <paramref name="max"/> (inclusive)</returns>
-        protected ulong GetRandomIndex(CryptoRandomStream crsRandomSource, ulong max)
-        {
-            ulong maxValid = UInt64.MaxValue - (UInt64.MaxValue % max);
-            
-            ulong idx = crsRandomSource.GetRandomUInt64();
-            
-            while (idx >= maxValid) {
-                idx = crsRandomSource.GetRandomUInt64();
-            }
-            
-            return (idx % max) + 1;
-        }
-        
-        /// <summary>
-        /// Get a Diceware index string of the desired length.
-        /// </summary>
-        /// <param name="crsRandomSource">KeePass cryptographic random number generator.</param>
-        /// <param name="len">The legnth of the string to generate</param>
-        /// <returns></returns>
-        protected string GetIndexString(CryptoRandomStream crsRandomSource, int len)
-        {
-            ulong[] indices = new ulong[len];
-            
-            for (int i = 0; i < len; i++) 
-            {
-                indices[i] = GetRandomIndex(crsRandomSource, DICE_SIZE);
-            }
-            
-            return string.Join("", indices);
-        }
+      
     }
 }

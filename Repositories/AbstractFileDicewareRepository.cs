@@ -10,6 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 using System;
 using System.Collections.Generic;
 using System.IO;
+using KeePassLib.Cryptography;
 
 namespace DicewareGenerator.Repositories
 { 
@@ -18,12 +19,22 @@ namespace DicewareGenerator.Repositories
     /// </summary>
     abstract public class AbstractFileDicewareRepository : IDicewareRepository
     {
-        protected readonly string[] m_filenames = new string[] { 
+        protected static readonly string[] m_filenames = new string[] { 
             "eff_short_wordlist.txt",
             "eff_large_wordlist.txt"
         };
-        protected readonly List<string>  m_indices = new List<string>();
         protected readonly Dictionary<string, string> m_data = new Dictionary<string, string>();
+        protected CryptoRandomStream m_cryptoRandom;
+        protected static ulong DiceSize {
+            get {
+                return 6;
+            }
+        }
+        protected static ulong MaxValidRandRange {
+            get {
+                return UInt64.MaxValue - (UInt64.MaxValue % DiceSize);
+            }
+        }
 
         /// <summary>
         /// Returns the path for given Diceware filetype.
@@ -65,47 +76,53 @@ namespace DicewareGenerator.Repositories
         /// <returns>The require length of the repository's index.</returns>
         abstract public DicewareIndexLength GetIndexLength();
         
-        /// <summary>
-        /// Add search criteria for an index.
-        /// </summary>
-        /// <param name="index">The diceware index to search for</param>
-        public void SearchByIndices(string index)
-        {
-            m_indices.Add(index);
-        }
+        abstract public DicewareFileType GetFileType();
         
-        /// <summary>
-        /// Add search criteria for one or more indices.
-        /// </summary>
-        /// <param name="indices">The diceware index or indices to search for</param>
-        public void SearchByIndices(string[] indices)
+        public List<string> GetRandom(int count)
         {
-            m_indices.AddRange(indices);
-        }
-        
-        /// <summary>
-        /// Clear existing criteria.
-        /// </summary>
-        public void Clear()
-        {
-            m_indices.Clear();
-        }
-        
-        /// <summary>
-        /// Get the results for any existing criteria.
-        /// </summary>
-        public List<String> Get()
-        {
-            List<string> result = new List<string>();
-            
-            foreach (string index in m_indices)
-            {
-                result.Add(m_data[index]);
+            if (count <= 0) {
+                throw new ArgumentOutOfRangeException("count");
             }
             
-            Clear();
+            List<string> result = new List<string>();
+            
+            for (int i = 0; i < count; i++) {
+                result.Add(m_data[GetIndexString()]);
+            }
             
             return result;
+            
+        }
+        
+        /// <summary>
+        /// Get a random index for the wordlist.
+        /// </summary>
+        /// <returns>Returns a random number between 1 and the max dice size (inclusive)</returns>
+        protected ulong GetRandomIndex()
+        {
+            ulong idx = m_cryptoRandom.GetRandomUInt64();
+            
+            while (idx >= MaxValidRandRange) {
+                idx = m_cryptoRandom.GetRandomUInt64();
+            }
+            
+            return (idx % DiceSize) + 1;
+        }
+        
+        /// <summary>
+        /// Get a Diceware index string of the desired length.
+        /// </summary>
+        /// <returns>A diceware string index</returns>
+        protected string GetIndexString()
+        {
+            int len = (int)GetIndexLength();
+            ulong[] indices = new ulong[len];
+            
+            for (int i = 0; i < len; i++) {
+                indices[i] = GetRandomIndex();
+            }
+            
+            return string.Join("", indices);
         }
     }
 }

@@ -8,49 +8,39 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 using System;
-using System.Drawing;
-using System.Windows.Forms;
-using System.Configuration;
+using System.Collections.Generic;
+using System.Linq;
 using DicewareGenerator.Models;
 using DicewareGenerator.Repositories;
+using KeePassLib.Security;
 
-namespace DicewareGenerator.UI
+namespace DicewareGenerator.Generators
 {
     /// <summary>
-    /// Description of Options.
+    /// Description of DicewareGenerator.
     /// </summary>
-    public partial class Options : Form
+    public class PhraseGenerator : IPhraseGenerator
     {
-        protected Config m_config;
+        protected readonly Config m_config;
+        protected readonly IDicewareRepository m_repo;
         
-        public Options()
-        {
-            InitializeComponent();
-            uxWordlistComboBox.DataSource = Enum.GetValues(typeof(DicewareFileType));
-        }
-        
-        public Options(Config config) : this()
+        public PhraseGenerator(Config config, IDicewareRepository repository)
         {
             m_config = config;
-            
-            uxNumberOfWords.Value = config.NumberOfWords;
-            uxStudlyCapsCheckBox.Checked = config.StudlyCaps;
-            uxWordlistComboBox.SelectedItem = config.Wordlist;
+            m_repo = repository;
         }
         
-        void UxCancelBtnClick(object sender, EventArgs e)
+        public ProtectedString Generate()
         {
-            Close();
-        }
-        
-        void UxOKBtnClick(object sender, EventArgs e)
-        {
-            m_config.NumberOfWords = uxNumberOfWords.Value;
-            m_config.StudlyCaps = uxStudlyCapsCheckBox.Checked;
-            m_config.Wordlist = (DicewareFileType)uxWordlistComboBox.SelectedItem;
+            List<string> words = m_repo.GetRandom((int)m_config.NumberOfWords);
             
-            Close();
+            if (m_config.StudlyCaps) {
+                words = words.Select(word => word.First().ToString().ToUpper() + word.Substring(1)).ToList();
+            }
+            
+            string pwd = string.Join(" ", words);
+            
+            return new ProtectedString(false, pwd);
         }
-
     }
 }

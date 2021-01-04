@@ -1,5 +1,5 @@
 ﻿/*
-Copyright 2021 Robin Malburn
+Copyright <YEAR> Robin Malburn
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -8,49 +8,30 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 using System;
-using System.Drawing;
-using System.Windows.Forms;
-using System.Configuration;
 using DicewareGenerator.Models;
-using DicewareGenerator.Repositories;
+using KeePassLib.Cryptography;
 
-namespace DicewareGenerator.UI
+namespace DicewareGenerator.Repositories
 {
     /// <summary>
-    /// Description of Options.
+    /// Factory for creating Diceware Repositories.
     /// </summary>
-    public partial class Options : Form
-    {
-        protected Config m_config;
+    public class DicewareRepositoryFactory : IDicewareRepositoryFactory
+    {      
+        protected readonly Config m_config;
         
-        public Options()
-        {
-            InitializeComponent();
-            uxWordlistComboBox.DataSource = Enum.GetValues(typeof(DicewareFileType));
-        }
-        
-        public Options(Config config) : this()
+        public DicewareRepositoryFactory(Config config)
         {
             m_config = config;
-            
-            uxNumberOfWords.Value = config.NumberOfWords;
-            uxStudlyCapsCheckBox.Checked = config.StudlyCaps;
-            uxWordlistComboBox.SelectedItem = config.Wordlist;
         }
         
-        void UxCancelBtnClick(object sender, EventArgs e)
+        public IDicewareRepository Make(CryptoRandomStream cryptoRandom)
         {
-            Close();
-        }
-        
-        void UxOKBtnClick(object sender, EventArgs e)
-        {
-            m_config.NumberOfWords = uxNumberOfWords.Value;
-            m_config.StudlyCaps = uxStudlyCapsCheckBox.Checked;
-            m_config.Wordlist = (DicewareFileType)uxWordlistComboBox.SelectedItem;
+            if (m_config.Wordlist == DicewareFileType.Short) {
+                return new FileShortDicewareRepository(cryptoRandom);
+            }
             
-            Close();
+            return new FileLongDicewareRepository(cryptoRandom);
         }
-
     }
 }

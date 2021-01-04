@@ -8,49 +8,29 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 using System;
-using System.Drawing;
-using System.Windows.Forms;
-using System.Configuration;
-using DicewareGenerator.Models;
-using DicewareGenerator.Repositories;
+using KeePassLib.Cryptography;
 
-namespace DicewareGenerator.UI
+namespace DicewareGenerator.Repositories
 {
     /// <summary>
-    /// Description of Options.
+    /// Long file based diceware repository implementation.
     /// </summary>
-    public partial class Options : Form
+    public class FileLongDicewareRepository : AbstractFileDicewareRepository
     {
-        protected Config m_config;
-        
-        public Options()
+        public FileLongDicewareRepository(CryptoRandomStream cryptoRandom)
         {
-            InitializeComponent();
-            uxWordlistComboBox.DataSource = Enum.GetValues(typeof(DicewareFileType));
+           m_cryptoRandom = cryptoRandom;
+           PopulateData(DicewareFileType.Long);
         }
         
-        public Options(Config config) : this()
+        public override DicewareIndexLength GetIndexLength()
         {
-            m_config = config;
-            
-            uxNumberOfWords.Value = config.NumberOfWords;
-            uxStudlyCapsCheckBox.Checked = config.StudlyCaps;
-            uxWordlistComboBox.SelectedItem = config.Wordlist;
+            return DicewareIndexLength.Long;
         }
         
-        void UxCancelBtnClick(object sender, EventArgs e)
+        public override DicewareFileType GetFileType() 
         {
-            Close();
+            return DicewareFileType.Long;
         }
-        
-        void UxOKBtnClick(object sender, EventArgs e)
-        {
-            m_config.NumberOfWords = uxNumberOfWords.Value;
-            m_config.StudlyCaps = uxStudlyCapsCheckBox.Checked;
-            m_config.Wordlist = (DicewareFileType)uxWordlistComboBox.SelectedItem;
-            
-            Close();
-        }
-
     }
 }

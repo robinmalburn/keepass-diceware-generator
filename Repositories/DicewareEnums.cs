@@ -19,6 +19,6 @@ namespace DicewareGenerator.Repositories
     public enum DicewareIndexLength : int
     {
         Short = 4,
-        Long = 6
+        Long = 5
     }
 }

@@ -18,7 +18,7 @@ namespace DicewareGenerator
     public class DicewareGeneratorExt: Plugin
     {
         private IPluginHost m_host = null;
-        private DicewareGenerator m_generator = null;
+        private DicewarePwGenerator m_generator = null;
 
         public override bool Initialize(IPluginHost host)
         {
@@ -28,7 +28,7 @@ namespace DicewareGenerator
             }
             
             m_host = host;
-            m_generator = new DicewareGenerator();
+            m_generator = new DicewarePwGenerator();
             m_host.PwGeneratorPool.Add(m_generator);
             
             return true;

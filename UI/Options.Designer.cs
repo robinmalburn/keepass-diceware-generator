@@ -17,11 +17,13 @@ namespace DicewareGenerator.UI
         private System.ComponentModel.IContainer components = null;
         private System.Windows.Forms.NumericUpDown uxNumberOfWords;
         private System.Windows.Forms.Label uxNumberOfWordsLabel;
-        private System.Windows.Forms.Button uxSaveBtn;
+        private System.Windows.Forms.Button uxOkBtn;
         private System.Windows.Forms.Button uxCancelBtn;
         private System.Windows.Forms.Panel uxFieldsPanel;
         private System.Windows.Forms.Panel uxControlsPanel;
         private System.Windows.Forms.CheckBox uxStudlyCapsCheckBox;
+        private System.Windows.Forms.Label uxWordListLabel;
+        private System.Windows.Forms.ComboBox uxWordlistComboBox;
         
         /// <summary>
         /// Disposes resources used by the form.
@@ -46,10 +48,12 @@ namespace DicewareGenerator.UI
         {
             this.uxNumberOfWords = new System.Windows.Forms.NumericUpDown();
             this.uxNumberOfWordsLabel = new System.Windows.Forms.Label();
-            this.uxSaveBtn = new System.Windows.Forms.Button();
+            this.uxOkBtn = new System.Windows.Forms.Button();
             this.uxCancelBtn = new System.Windows.Forms.Button();
             this.uxControlsPanel = new System.Windows.Forms.Panel();
             this.uxFieldsPanel = new System.Windows.Forms.Panel();
+            this.uxWordListLabel = new System.Windows.Forms.Label();
+            this.uxWordlistComboBox = new System.Windows.Forms.ComboBox();
             this.uxStudlyCapsCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.uxNumberOfWords)).BeginInit();
             this.uxControlsPanel.SuspendLayout();
@@ -86,19 +90,19 @@ namespace DicewareGenerator.UI
             this.uxNumberOfWordsLabel.TabIndex = 1;
             this.uxNumberOfWordsLabel.Text = "How many words should the phrase consist of?";
             // 
-            // uxSaveBtn
+            // uxOkBtn
             // 
-            this.uxSaveBtn.Location = new System.Drawing.Point(248, 8);
-            this.uxSaveBtn.Name = "uxSaveBtn";
-            this.uxSaveBtn.Size = new System.Drawing.Size(75, 23);
-            this.uxSaveBtn.TabIndex = 2;
-            this.uxSaveBtn.Text = "Save";
-            this.uxSaveBtn.UseVisualStyleBackColor = true;
-            this.uxSaveBtn.Click += new System.EventHandler(this.UxSaveBtnClick);
+            this.uxOkBtn.Location = new System.Drawing.Point(168, 8);
+            this.uxOkBtn.Name = "uxOkBtn";
+            this.uxOkBtn.Size = new System.Drawing.Size(75, 23);
+            this.uxOkBtn.TabIndex = 2;
+            this.uxOkBtn.Text = "OK";
+            this.uxOkBtn.UseVisualStyleBackColor = true;
+            this.uxOkBtn.Click += new System.EventHandler(this.UxOKBtnClick);
             // 
             // uxCancelBtn
             // 
-            this.uxCancelBtn.Location = new System.Drawing.Point(168, 8);
+            this.uxCancelBtn.Location = new System.Drawing.Point(248, 8);
             this.uxCancelBtn.Name = "uxCancelBtn";
             this.uxCancelBtn.Size = new System.Drawing.Size(75, 23);
             this.uxCancelBtn.TabIndex = 3;
@@ -110,7 +114,7 @@ namespace DicewareGenerator.UI
             // 
             this.uxControlsPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.uxControlsPanel.Controls.Add(this.uxSaveBtn);
+            this.uxControlsPanel.Controls.Add(this.uxOkBtn);
             this.uxControlsPanel.Controls.Add(this.uxCancelBtn);
             this.uxControlsPanel.Location = new System.Drawing.Point(0, 107);
             this.uxControlsPanel.Name = "uxControlsPanel";
@@ -122,6 +126,8 @@ namespace DicewareGenerator.UI
             this.uxFieldsPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.uxFieldsPanel.Controls.Add(this.uxWordListLabel);
+            this.uxFieldsPanel.Controls.Add(this.uxWordlistComboBox);
             this.uxFieldsPanel.Controls.Add(this.uxStudlyCapsCheckBox);
             this.uxFieldsPanel.Controls.Add(this.uxNumberOfWordsLabel);
             this.uxFieldsPanel.Controls.Add(this.uxNumberOfWords);
@@ -129,6 +135,25 @@ namespace DicewareGenerator.UI
             this.uxFieldsPanel.Name = "uxFieldsPanel";
             this.uxFieldsPanel.Size = new System.Drawing.Size(336, 107);
             this.uxFieldsPanel.TabIndex = 5;
+            // 
+            // uxWordListLabel
+            // 
+            this.uxWordListLabel.Location = new System.Drawing.Point(24, 56);
+            this.uxWordListLabel.Name = "uxWordListLabel";
+            this.uxWordListLabel.Size = new System.Drawing.Size(168, 23);
+            this.uxWordListLabel.TabIndex = 4;
+            this.uxWordListLabel.Text = "Choose a preferred wordlist?";
+            // 
+            // uxWordListComboBox
+            // 
+            this.uxWordlistComboBox.FormattingEnabled = true;
+            this.uxWordlistComboBox.Items.AddRange(new object[] {
+            "Short (Avg word length ~4 characters)",
+            "Long (Avg word legnth ~7 characters)"});
+            this.uxWordlistComboBox.Location = new System.Drawing.Point(200, 56);
+            this.uxWordlistComboBox.Name = "uxWordListComboBox";
+            this.uxWordlistComboBox.Size = new System.Drawing.Size(121, 21);
+            this.uxWordlistComboBox.TabIndex = 3;
             // 
             // uxStudlyCapsCheckBox
             // 

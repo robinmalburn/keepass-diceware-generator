@@ -8,33 +8,15 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 using System;
-using System.Collections.Generic;
+using KeePassLib.Security;
 
-namespace DicewareGenerator.Repositories
+namespace DicewareGenerator.Generators
 {
     /// <summary>
-    /// Interface for retrieving values from a diceware based word/character list.
+    /// Diceware Generator Interface.
     /// </summary>
-    public interface IDicewareRepository
-    {   
-        /// <summary>
-        /// Get the filetype of the repository.
-        /// </summary>
-        /// <returns>Returns the filetype of the repository.</returns>
-        DicewareFileType GetFileType();
-        
-        /// <summary>
-        /// Get the index length for the given repository type.
-        /// </summary>
-        /// <returns>The required length of the repository's index.</returns>
-        DicewareIndexLength GetIndexLength();
-        
-        /// <summary>
-        /// Get <paramref name="count"/> random entries from the repository.
-        /// </summary>
-        /// <param name="count">The number of random references to return.</param>
-        /// <returns>A list of random entires.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown if count is less than or equal to zero.</exception>
-        List<string> GetRandom(int count);
+    public interface IPhraseGenerator
+    {
+        ProtectedString Generate();
     }
 }

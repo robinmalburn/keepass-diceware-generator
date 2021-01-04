@@ -10,6 +10,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Xml;
+using System.Xml.Serialization;
+using System.Text;
+using DicewareGenerator.Repositories;
 
 namespace DicewareGenerator.Models
 {
@@ -18,11 +22,11 @@ namespace DicewareGenerator.Models
     /// </summary>
     public class Config
     {
-        const string SIGNATURE = "diceware_config_format:0.2.0";
-        
         public decimal NumberOfWords = 6;
         
         public bool StudlyCaps = false;
+        
+        public DicewareFileType Wordlist = DicewareFileType.Short;
         
         public Config()
         {
@@ -31,46 +35,39 @@ namespace DicewareGenerator.Models
                 
         static public string serialize(Config config)
         {   
-            string[] values = {
-                Config.SIGNATURE,
-                string.Format("NumberOfWords:{0}", config.NumberOfWords),
-                string.Format("StudlyCaps:{0}", config.StudlyCaps ? "1" : "0")
-            };
+            XmlSerializer serializer = new XmlSerializer(config.GetType());
             
-            return string.Join(Environment.NewLine, values);
+            using (MemoryStream stream = new MemoryStream()) {
+                
+                using (XmlWriter writer = XmlWriter.Create(stream, new XmlWriterSettings() {
+                    Encoding = new UTF8Encoding(false),
+                    Indent = false,
+                    NewLineOnAttributes = false}
+                   )
+                ) {
+                    serializer.Serialize(writer, config);
+                    return Encoding.UTF8.GetString(stream.ToArray());
+                }
+            }
         }
         
         static public Config deserialize(string raw)
         {
             Config config = new Config();
             
-            if (string.IsNullOrEmpty(raw) || raw.StartsWith(Config.SIGNATURE, StringComparison.Ordinal) == false) {
+            if (string.IsNullOrEmpty(raw)) {
                 return config;
             }
             
-            using(StringReader reader = new StringReader(raw)) {
-                string line;
-                char[] separator = { ':' };
-                Dictionary<string, string> values = new Dictionary<string, string>();
-                
-                while ((line = reader.ReadLine()) != null) {
-                    string[] parts = line.Split(separator, 2);
-                    values.Add(parts[0], parts[1]);
-                }
-                
-                foreach (string key in values.Keys) {
-                    switch (key) {
-                        case "NumberOfWords":
-                            decimal.TryParse(values[key], out config.NumberOfWords);
-                            break;
-                        case "StudlyCaps":
-                            config.StudlyCaps = values[key] == "1";
-                            break;
-                    }
+            XmlSerializer serializer = new XmlSerializer(config.GetType());
+            
+            using (StringReader reader = new StringReader(raw)) {
+                try {
+                return (Config)serializer.Deserialize(reader);
+                } catch (InvalidOperationException) {
+                    return config;
                 }
             }
-            
-            return config;
         }
     }
 }
