@@ -8,6 +8,7 @@ Download the latest release, unzip the contents of the release zip, and copy the
 
 - `DicewareGenerator.dll`
 - `eff_short_wordlist.txt`
+- `eff_large_wordlist.txt`
 
 **Note:** Because the plugin includes multiple files (namely the EFF wordlist), to avoid collisions with any other plugins, I'd recommend putting the files in a subfolder, as mentioned, however the plugin will work in the root of the Plugins folder just fine.  There's less chance of stepping on the toes of any other plugins if you run it from a subfolder as shown above, though, so it's just an extra precaution for yourself.
 

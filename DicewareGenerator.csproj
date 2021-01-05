@@ -78,6 +78,9 @@
     <None Include=".gitignore" />
     <None Include="LICENSE" />
     <None Include="README.md" />
+    <None Include="Resources\eff_large_wordlist.txt" />
+    <None Include="Resources\eff_short_wordlist.txt" />
+    <None Include="Resources\KeePass.exe" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="UI\Options.resx">
