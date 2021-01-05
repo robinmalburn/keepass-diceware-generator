@@ -62,6 +62,7 @@
     <Compile Include="Repositories\IDicewareRepositoryFactory.cs" />
     <Compile Include="Repositories\FileLongDicewareRepository.cs" />
     <Compile Include="Repositories\FileShortDicewareRepository.cs" />
+    <Compile Include="Repositories\PresentationDicewareRepository.cs" />
     <Compile Include="UI\Options.cs" />
     <Compile Include="UI\Options.Designer.cs">
       <DependentUpon>Options.cs</DependentUpon>

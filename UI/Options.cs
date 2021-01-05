@@ -10,9 +10,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Configuration;
 using DicewareGenerator.Models;
 using DicewareGenerator.Repositories;
+using DicewareGenerator.Generators;
 
 namespace DicewareGenerator.UI
 {
@@ -21,18 +21,17 @@ namespace DicewareGenerator.UI
     /// </summary>
     public partial class Options : Form
     {
-        protected Config m_config;
+        protected readonly Config m_config;
+        protected readonly Config m_presentationConfig;
+        protected readonly IPhraseGenerator m_generator;
         
         public Options()
         {
             InitializeComponent();
+            
             uxWordlistComboBox.DataSource = Enum.GetValues(typeof(DicewareFileType));
-        }
-        
-        protected string SeparatorExample {
-            get {
-                return string.Format("Example: foo{0}bar{0}baz", uxSeparatorText.Text);
-            }
+            m_presentationConfig = new Config();
+            m_generator = new PhraseGenerator(m_presentationConfig, new PresentationDicewareRepository(m_presentationConfig));
         }
         
         public Options(Config config) : this()
@@ -43,7 +42,8 @@ namespace DicewareGenerator.UI
             uxStudlyCapsCheckBox.Checked = config.StudlyCaps;
             uxWordlistComboBox.SelectedItem = config.Wordlist;
             uxSeparatorText.Text = config.Separator;
-            uxSeparatorExampleLabel.Text = SeparatorExample;
+            
+            OptionsChanged();
         }
         
         void UxCancelBtnClick(object sender, EventArgs e)
@@ -61,11 +61,20 @@ namespace DicewareGenerator.UI
             Close();
         }
         
-        void UxSeparatorTextTextChanged(object sender, EventArgs e)
+        protected void OptionsChanged()
         {
-          uxSeparatorExampleLabel.Text = SeparatorExample;
+            m_presentationConfig.NumberOfWords = uxNumberOfWords.Value;
+            m_presentationConfig.StudlyCaps = uxStudlyCapsCheckBox.Checked;
+            m_presentationConfig.Wordlist = (DicewareFileType)uxWordlistComboBox.SelectedItem;
+            m_presentationConfig.Separator = uxSeparatorText.Text;
+            
+            uxExamplePhraseLabel.Text = m_generator.Generate().ReadString();
         }
- 
+        
+        protected void OptionsChanged(object sender, EventArgs e)
+        {
+            OptionsChanged();
+        }
 
     }
 }

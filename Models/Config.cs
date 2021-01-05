@@ -22,6 +22,9 @@ namespace DicewareGenerator.Models
     /// </summary>
     public class Config
     {
+        [XmlAttribute("space", Namespace = "http://www.w3.org/XML/1998/namespace")]  
+        public string Space="preserve";
+     
         public decimal NumberOfWords = 6;
         
         public bool StudlyCaps = false;
