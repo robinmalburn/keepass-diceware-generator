@@ -38,7 +38,7 @@ namespace DicewareGenerator.Generators
                 words = words.Select(word => word.First().ToString().ToUpper() + word.Substring(1)).ToList();
             }
             
-            string pwd = string.Join(" ", words);
+            string pwd = string.Join(m_config.Separator, words);
             
             return new ProtectedString(false, pwd);
         }

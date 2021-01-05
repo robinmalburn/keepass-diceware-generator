@@ -29,6 +29,12 @@ namespace DicewareGenerator.UI
             uxWordlistComboBox.DataSource = Enum.GetValues(typeof(DicewareFileType));
         }
         
+        protected string SeparatorExample {
+            get {
+                return string.Format("Example: foo{0}bar{0}baz", uxSeparatorText.Text);
+            }
+        }
+        
         public Options(Config config) : this()
         {
             m_config = config;
@@ -36,6 +42,8 @@ namespace DicewareGenerator.UI
             uxNumberOfWords.Value = config.NumberOfWords;
             uxStudlyCapsCheckBox.Checked = config.StudlyCaps;
             uxWordlistComboBox.SelectedItem = config.Wordlist;
+            uxSeparatorText.Text = config.Separator;
+            uxSeparatorExampleLabel.Text = SeparatorExample;
         }
         
         void UxCancelBtnClick(object sender, EventArgs e)
@@ -48,9 +56,16 @@ namespace DicewareGenerator.UI
             m_config.NumberOfWords = uxNumberOfWords.Value;
             m_config.StudlyCaps = uxStudlyCapsCheckBox.Checked;
             m_config.Wordlist = (DicewareFileType)uxWordlistComboBox.SelectedItem;
+            m_config.Separator = uxSeparatorText.Text;
             
             Close();
         }
+        
+        void UxSeparatorTextTextChanged(object sender, EventArgs e)
+        {
+          uxSeparatorExampleLabel.Text = SeparatorExample;
+        }
+ 
 
     }
 }

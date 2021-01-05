@@ -24,6 +24,9 @@ namespace DicewareGenerator.UI
         private System.Windows.Forms.CheckBox uxStudlyCapsCheckBox;
         private System.Windows.Forms.Label uxWordListLabel;
         private System.Windows.Forms.ComboBox uxWordlistComboBox;
+        private System.Windows.Forms.Label uxSeparatorLabel;
+        private System.Windows.Forms.TextBox uxSeparatorText;
+        private System.Windows.Forms.Label uxSeparatorExampleLabel;
         
         /// <summary>
         /// Disposes resources used by the form.
@@ -52,6 +55,9 @@ namespace DicewareGenerator.UI
             this.uxCancelBtn = new System.Windows.Forms.Button();
             this.uxControlsPanel = new System.Windows.Forms.Panel();
             this.uxFieldsPanel = new System.Windows.Forms.Panel();
+            this.uxSeparatorExampleLabel = new System.Windows.Forms.Label();
+            this.uxSeparatorLabel = new System.Windows.Forms.Label();
+            this.uxSeparatorText = new System.Windows.Forms.TextBox();
             this.uxWordListLabel = new System.Windows.Forms.Label();
             this.uxWordlistComboBox = new System.Windows.Forms.ComboBox();
             this.uxStudlyCapsCheckBox = new System.Windows.Forms.CheckBox();
@@ -116,9 +122,9 @@ namespace DicewareGenerator.UI
             | System.Windows.Forms.AnchorStyles.Right)));
             this.uxControlsPanel.Controls.Add(this.uxOkBtn);
             this.uxControlsPanel.Controls.Add(this.uxCancelBtn);
-            this.uxControlsPanel.Location = new System.Drawing.Point(0, 107);
+            this.uxControlsPanel.Location = new System.Drawing.Point(0, 152);
             this.uxControlsPanel.Name = "uxControlsPanel";
-            this.uxControlsPanel.Size = new System.Drawing.Size(332, 36);
+            this.uxControlsPanel.Size = new System.Drawing.Size(336, 42);
             this.uxControlsPanel.TabIndex = 4;
             // 
             // uxFieldsPanel
@@ -126,6 +132,9 @@ namespace DicewareGenerator.UI
             this.uxFieldsPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.uxFieldsPanel.Controls.Add(this.uxSeparatorExampleLabel);
+            this.uxFieldsPanel.Controls.Add(this.uxSeparatorLabel);
+            this.uxFieldsPanel.Controls.Add(this.uxSeparatorText);
             this.uxFieldsPanel.Controls.Add(this.uxWordListLabel);
             this.uxFieldsPanel.Controls.Add(this.uxWordlistComboBox);
             this.uxFieldsPanel.Controls.Add(this.uxStudlyCapsCheckBox);
@@ -133,32 +142,56 @@ namespace DicewareGenerator.UI
             this.uxFieldsPanel.Controls.Add(this.uxNumberOfWords);
             this.uxFieldsPanel.Location = new System.Drawing.Point(0, 0);
             this.uxFieldsPanel.Name = "uxFieldsPanel";
-            this.uxFieldsPanel.Size = new System.Drawing.Size(336, 107);
+            this.uxFieldsPanel.Size = new System.Drawing.Size(336, 152);
             this.uxFieldsPanel.TabIndex = 5;
+            // 
+            // uxSeparatorExampleLabel
+            // 
+            this.uxSeparatorExampleLabel.Location = new System.Drawing.Point(200, 104);
+            this.uxSeparatorExampleLabel.Name = "uxSeparatorExampleLabel";
+            this.uxSeparatorExampleLabel.Size = new System.Drawing.Size(120, 23);
+            this.uxSeparatorExampleLabel.TabIndex = 7;
+            // 
+            // uxSeparatorLabel
+            // 
+            this.uxSeparatorLabel.Location = new System.Drawing.Point(24, 104);
+            this.uxSeparatorLabel.Name = "uxSeparatorLabel";
+            this.uxSeparatorLabel.Size = new System.Drawing.Size(152, 23);
+            this.uxSeparatorLabel.TabIndex = 6;
+            this.uxSeparatorLabel.Text = "Customise the word separator? (Defaults to an empty space)";
+            // 
+            // uxSeparatorText
+            // 
+            this.uxSeparatorText.Location = new System.Drawing.Point(176, 104);
+            this.uxSeparatorText.MaxLength = 1;
+            this.uxSeparatorText.Name = "uxSeparatorText";
+            this.uxSeparatorText.Size = new System.Drawing.Size(16, 20);
+            this.uxSeparatorText.TabIndex = 5;
+            this.uxSeparatorText.TextChanged += new System.EventHandler(this.UxSeparatorTextTextChanged);
             // 
             // uxWordListLabel
             // 
-            this.uxWordListLabel.Location = new System.Drawing.Point(24, 56);
+            this.uxWordListLabel.Location = new System.Drawing.Point(24, 72);
             this.uxWordListLabel.Name = "uxWordListLabel";
-            this.uxWordListLabel.Size = new System.Drawing.Size(168, 23);
+            this.uxWordListLabel.Size = new System.Drawing.Size(144, 23);
             this.uxWordListLabel.TabIndex = 4;
             this.uxWordListLabel.Text = "Choose a preferred wordlist?";
             // 
-            // uxWordListComboBox
+            // uxWordlistComboBox
             // 
             this.uxWordlistComboBox.FormattingEnabled = true;
             this.uxWordlistComboBox.Items.AddRange(new object[] {
             "Short (Avg word length ~4 characters)",
             "Long (Avg word legnth ~7 characters)"});
-            this.uxWordlistComboBox.Location = new System.Drawing.Point(200, 56);
-            this.uxWordlistComboBox.Name = "uxWordListComboBox";
-            this.uxWordlistComboBox.Size = new System.Drawing.Size(121, 21);
+            this.uxWordlistComboBox.Location = new System.Drawing.Point(176, 72);
+            this.uxWordlistComboBox.Name = "uxWordlistComboBox";
+            this.uxWordlistComboBox.Size = new System.Drawing.Size(144, 21);
             this.uxWordlistComboBox.TabIndex = 3;
             // 
             // uxStudlyCapsCheckBox
             // 
             this.uxStudlyCapsCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.uxStudlyCapsCheckBox.Location = new System.Drawing.Point(24, 32);
+            this.uxStudlyCapsCheckBox.Location = new System.Drawing.Point(24, 40);
             this.uxStudlyCapsCheckBox.Name = "uxStudlyCapsCheckBox";
             this.uxStudlyCapsCheckBox.Size = new System.Drawing.Size(296, 24);
             this.uxStudlyCapsCheckBox.TabIndex = 2;
@@ -169,18 +202,21 @@ namespace DicewareGenerator.UI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(333, 145);
+            this.ClientSize = new System.Drawing.Size(337, 191);
             this.Controls.Add(this.uxFieldsPanel);
             this.Controls.Add(this.uxControlsPanel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Options";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Diceware Generator Options";
+            this.TextChanged += new System.EventHandler(this.UxSeparatorTextTextChanged);
             ((System.ComponentModel.ISupportInitialize)(this.uxNumberOfWords)).EndInit();
             this.uxControlsPanel.ResumeLayout(false);
             this.uxFieldsPanel.ResumeLayout(false);
+            this.uxFieldsPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }

@@ -28,6 +28,8 @@ namespace DicewareGenerator.Models
         
         public DicewareFileType Wordlist = DicewareFileType.Short;
         
+        public string Separator = " ";
+        
         public Config()
         {
             
