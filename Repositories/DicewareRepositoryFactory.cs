@@ -1,5 +1,5 @@
 ﻿/*
-Copyright <YEAR> Robin Malburn
+Copyright 2021 Robin Malburn
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 using System;
 using DicewareGenerator.Models;
-using KeePassLib.Cryptography;
+using DicewareGenerator.Crypto;
 
 namespace DicewareGenerator.Repositories
 {
@@ -25,13 +25,13 @@ namespace DicewareGenerator.Repositories
             m_config = config;
         }
         
-        public IDicewareRepository Make(CryptoRandomStream cryptoRandom)
+        public IDicewareRepository Make(RandomUtil random)
         {
             if (m_config.Wordlist == DicewareFileType.Short) {
-                return new FileShortDicewareRepository(cryptoRandom);
+                return new FileShortDicewareRepository(random);
             }
             
-            return new FileLongDicewareRepository(cryptoRandom);
+            return new FileLongDicewareRepository(random);
         }
     }
 }

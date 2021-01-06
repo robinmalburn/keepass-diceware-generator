@@ -12,6 +12,7 @@ using DicewareGenerator.Generators;
 using DicewareGenerator.UI;
 using DicewareGenerator.Repositories;
 using DicewareGenerator.Models;
+using DicewareGenerator.Crypto;
 using KeePassLib;
 using KeePassLib.Cryptography;
 using KeePassLib.Cryptography.PasswordGenerator;
@@ -54,7 +55,8 @@ namespace DicewareGenerator
         {
             Config config = Config.deserialize(prf.CustomAlgorithmOptions);
             
-            IDicewareRepository repo = GetRepository(config, crsRandomSource);
+            RandomUtil rand = new RandomUtil(crsRandomSource);
+            IDicewareRepository repo = GetRepository(config, rand);
             IPhraseGenerator generator = new PhraseGenerator(config, repo);
 
             return generator.Generate();
@@ -73,13 +75,13 @@ namespace DicewareGenerator
         /// Get the Diceware Repository instance.
         /// </summary>
         /// <param name="config">The plugin configuration.</param>
-        /// <param name="cryptoRandom">Cryptographic random range.</param>
+        /// <param name="random">Cryptographic random range.</param>
         /// <returns>Returns an instance of the Diceware repository.</returns>
-        protected IDicewareRepository GetRepository(Config config, CryptoRandomStream cryptoRandom)
+        protected IDicewareRepository GetRepository(Config config, RandomUtil random)
         {
             IDicewareRepositoryFactory repo = new DicewareRepositoryFactory(config);
                 
-            m_repository = repo.Make(cryptoRandom);
+            m_repository = repo.Make(random);
             
             return m_repository;
         }

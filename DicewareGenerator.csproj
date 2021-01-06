@@ -49,6 +49,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Crypto\RandomUtil.cs" />
     <Compile Include="DicewarePwGenerator.cs" />
     <Compile Include="DicewareGeneratorExt.cs" />
     <Compile Include="Generators\PhraseGenerator.cs" />
@@ -71,6 +72,7 @@
   <ItemGroup>
     <Folder Include="Models" />
     <Folder Include="Generators" />
+    <Folder Include="Crypto" />
     <Folder Include="UI" />
     <Folder Include="Repositories" />
     <Folder Include="Resources" />

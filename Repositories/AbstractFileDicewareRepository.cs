@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 using System;
 using System.Collections.Generic;
 using System.IO;
-using KeePassLib.Cryptography;
+using DicewareGenerator.Crypto;
 
 namespace DicewareGenerator.Repositories
 { 
@@ -24,15 +24,10 @@ namespace DicewareGenerator.Repositories
             "eff_large_wordlist.txt"
         };
         protected readonly Dictionary<string, string> m_data = new Dictionary<string, string>();
-        protected CryptoRandomStream m_cryptoRandom;
+        protected RandomUtil m_random;
         protected static ulong DiceSize {
             get {
                 return 6;
-            }
-        }
-        protected static ulong MaxValidRandRange {
-            get {
-                return UInt64.MaxValue - (UInt64.MaxValue % DiceSize);
             }
         }
 
@@ -95,21 +90,6 @@ namespace DicewareGenerator.Repositories
         }
         
         /// <summary>
-        /// Get a random index for the wordlist.
-        /// </summary>
-        /// <returns>Returns a random number between 1 and the max dice size (inclusive)</returns>
-        protected ulong GetRandomIndex()
-        {
-            ulong idx = m_cryptoRandom.GetRandomUInt64();
-            
-            while (idx >= MaxValidRandRange) {
-                idx = m_cryptoRandom.GetRandomUInt64();
-            }
-            
-            return (idx % DiceSize) + 1;
-        }
-        
-        /// <summary>
         /// Get a Diceware index string of the desired length.
         /// </summary>
         /// <returns>A diceware string index</returns>
@@ -119,7 +99,7 @@ namespace DicewareGenerator.Repositories
             ulong[] indices = new ulong[len];
             
             for (int i = 0; i < len; i++) {
-                indices[i] = GetRandomIndex();
+                indices[i] = m_random.RandomRange(1, DiceSize);
             }
             
             return string.Join("", indices);
