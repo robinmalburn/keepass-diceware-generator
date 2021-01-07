@@ -7,21 +7,28 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-using System;
-using KeePassLib.Cryptography;
-
 namespace DicewareGenerator.Crypto
 {
+    using System;
+    using KeePassLib.Cryptography;
+
     /// <summary>
     /// Cryptographically secure random utilities.
     /// </summary>
     public class RandomUtil
     {
-        protected readonly CryptoRandomStream m_cryptoRandom;
+        /// <summary>
+        /// Cryptographic random source.
+        /// </summary>
+        protected readonly CryptoRandomStream CryptoRandom;
         
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RandomUtil" /> class.
+        /// </summary>
+        /// <param name="randomSource">KeePass Cryptographic Random Source.</param>
         public RandomUtil(CryptoRandomStream randomSource)
         {
-            m_cryptoRandom = randomSource;
+            this.CryptoRandom = randomSource;
         }
         
         /// <summary>
@@ -30,33 +37,36 @@ namespace DicewareGenerator.Crypto
         /// <param name="max">Maximum value</param>
         /// <param name="min">Minimum value</param>
         /// <returns>The random number.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">If the mimimum value is less than zero or greater than the maximum value.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">If the minimum value is less than zero or greater than the maximum value.</exception>
         /// <exception cref="ArgumentOutOfRangeException">If the maximum value is less than or equal to zero.</exception>
         public ulong RandomRange(ulong max, ulong min = 0)
         {
-            if (min < 0) {
+            if (min < 0)
+            {
                 throw new ArgumentOutOfRangeException("min", "Minimum value must be greater than or equal to zero.");
             }
             
-            if (min > max) {
+            if (min > max)
+            {
                 throw new ArgumentOutOfRangeException("min", "Minimum value must be less than maximum value.");
             }
             
-            if (max <= 0) {
+            if (max <= 0) 
+            {
                 throw new ArgumentOutOfRangeException("max", "Maximum value must be greater than zero.");
             }
 
-            ulong maxValid = UInt64.MaxValue - (UInt64.MaxValue % max);
-            ulong val = m_cryptoRandom.GetRandomUInt64();
+            ulong maxValid = ulong.MaxValue - (ulong.MaxValue % max);
+            ulong val = this.CryptoRandom.GetRandomUInt64();
             
-            while (val >= maxValid) {
-                val = m_cryptoRandom.GetRandomUInt64();
+            while (val >= maxValid)
+            {
+                val = this.CryptoRandom.GetRandomUInt64();
             }
             
-            ulong result = (val % max);
+            ulong result = val % max;
             
             return result < min ? min : result;
-        }
-        
+        } 
     }
 }
