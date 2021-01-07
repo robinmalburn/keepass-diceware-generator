@@ -7,44 +7,67 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using DicewareGenerator.Models;
-using DicewareGenerator.Repositories;
-using KeePassLib.Security;
-
 namespace DicewareGenerator.Generators
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using DicewareGenerator.Models;
+    using DicewareGenerator.Repositories;
+    using KeePassLib.Security;
+    
     /// <summary>
     /// Description of DicewareGenerator.
     /// </summary>
     public class PhraseGenerator : IPhraseGenerator
     {
-        protected readonly Config m_config;
-        protected readonly IDicewareRepository m_repo;
-        protected readonly IDicewareSpecialCharsRepository m_specialCharsRepo;
+        /// <summary>
+        /// Config instance.
+        /// </summary>
+        protected readonly Config Config;
         
+        /// <summary>
+        /// Diceware Repository Instance.
+        /// </summary>
+        protected readonly IDicewareRepository Repo;
+        
+        /// <summary>
+        /// Diceware Special Chars Repository Instance.
+        /// </summary>
+        protected readonly IDicewareSpecialCharsRepository SpecialCharsRepo;
+        
+        /// <summary>
+        /// Initializes a new phrase generator.
+        /// </summary>
+        /// <param name="config">A config instance.</param>
+        /// <param name="repository">A Diceware repository instance.</param>
+        /// <param name="specialCharsRepo">A Diceware Special Chars repository instance.</param>
         public PhraseGenerator(Config config, IDicewareRepository repository, IDicewareSpecialCharsRepository specialCharsRepo)
         {
-            m_config = config;
-            m_repo = repository;
-            m_specialCharsRepo = specialCharsRepo;
+            this.Config = config;
+            this.Repo = repository;
+            this.SpecialCharsRepo = specialCharsRepo;
         }
         
+        /// <summary>
+        /// Generates a passphrase.
+        /// </summary>
+        /// <returns>Returns a protected string of the passphrase.</returns>
         public ProtectedString Generate()
         {
-            List<string> words = m_repo.GetRandom((int)m_config.NumberOfWords);
+            List<string> words = this.Repo.GetRandom((int)this.Config.NumberOfWords);
             
-            if (m_config.StudlyCaps) {
+            if (this.Config.StudlyCaps)
+            {
                 words = words.Select(word => word.First().ToString().ToUpper() + word.Substring(1)).ToList();
             }
             
-            if (m_config.SpecialChars) {
-                words = words.Select(word => m_specialCharsRepo.Transform(word)).ToList();
+            if (this.Config.SpecialChars)
+            {
+                words = words.Select(word => this.SpecialCharsRepo.Transform(word)).ToList();
             }
             
-            string pwd = string.Join(m_config.Separator, words);
+            string pwd = string.Join(this.Config.Separator, words);
             
             return new ProtectedString(false, pwd);
         }
