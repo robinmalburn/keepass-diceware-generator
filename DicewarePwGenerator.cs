@@ -7,26 +7,24 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-using System;
-using DicewareGenerator.Generators;
-using DicewareGenerator.UI;
-using DicewareGenerator.Repositories;
-using DicewareGenerator.Models;
-using DicewareGenerator.Crypto;
-using KeePassLib;
-using KeePassLib.Cryptography;
-using KeePassLib.Cryptography.PasswordGenerator;
-using KeePassLib.Security;
-
 namespace DicewareGenerator
 {
+    using System;
+    using DicewareGenerator.Generators;
+    using DicewareGenerator.UI;
+    using DicewareGenerator.Repositories;
+    using DicewareGenerator.Models;
+    using DicewareGenerator.Crypto;
+    using KeePassLib;
+    using KeePassLib.Cryptography;
+    using KeePassLib.Cryptography.PasswordGenerator;
+    using KeePassLib.Security;
+
     /// <summary>
     /// Diceware based password generator class.
     /// </summary>
-    public class DicewarePwGenerator: CustomPwGenerator
+    public class DicewarePwGenerator : CustomPwGenerator
     {
-        const ulong DICE_SIZE = 6;
-        
         private static readonly PwUuid m_uuid = new PwUuid(
             new Byte[] {
                 0x1D, 0xE9, 0x81, 0x24, 0xD9, 0x4C, 0x61, 0x41,
@@ -51,7 +49,7 @@ namespace DicewareGenerator
         
         public override ProtectedString Generate(PwProfile prf, CryptoRandomStream crsRandomSource)
         {
-            Config config = Config.deserialize(prf.CustomAlgorithmOptions);
+            Config config = Config.Deserialize(prf.CustomAlgorithmOptions);
             RandomUtil random = new RandomUtil(crsRandomSource);
             IDicewareRepositoryFactory factory = new DicewareRepositoryFactory(config);
             IDicewareRepository repo = factory.Make(random);
@@ -64,11 +62,11 @@ namespace DicewareGenerator
         
         public override string GetOptions(string strCurrentOptions)
         {
-            Config config = Config.deserialize(strCurrentOptions);
+            Config config = Config.Deserialize(strCurrentOptions);
             Options options = new Options(config);
             options.ShowDialog();
             
-            return Config.serialize(config);
+            return Config.Serialize(config);
         }
     }
 }
