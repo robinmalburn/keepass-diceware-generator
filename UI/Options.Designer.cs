@@ -28,6 +28,8 @@ namespace DicewareGenerator.UI
         private System.Windows.Forms.TextBox uxSeparatorText;
         private System.Windows.Forms.Label uxExamplePhraseLabel;
         private System.Windows.Forms.Label uxExampleLabel;
+        private System.Windows.Forms.CheckBox uxSpecialCharsCheckBox;
+        private System.Windows.Forms.Panel uxExamplePanel;
         
         /// <summary>
         /// Disposes resources used by the form.
@@ -56,16 +58,19 @@ namespace DicewareGenerator.UI
             this.uxCancelBtn = new System.Windows.Forms.Button();
             this.uxControlsPanel = new System.Windows.Forms.Panel();
             this.uxFieldsPanel = new System.Windows.Forms.Panel();
-            this.uxExampleLabel = new System.Windows.Forms.Label();
-            this.uxExamplePhraseLabel = new System.Windows.Forms.Label();
+            this.uxSpecialCharsCheckBox = new System.Windows.Forms.CheckBox();
             this.uxSeparatorLabel = new System.Windows.Forms.Label();
             this.uxSeparatorText = new System.Windows.Forms.TextBox();
             this.uxWordListLabel = new System.Windows.Forms.Label();
             this.uxWordlistComboBox = new System.Windows.Forms.ComboBox();
             this.uxStudlyCapsCheckBox = new System.Windows.Forms.CheckBox();
+            this.uxExampleLabel = new System.Windows.Forms.Label();
+            this.uxExamplePhraseLabel = new System.Windows.Forms.Label();
+            this.uxExamplePanel = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.uxNumberOfWords)).BeginInit();
             this.uxControlsPanel.SuspendLayout();
             this.uxFieldsPanel.SuspendLayout();
+            this.uxExamplePanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // uxNumberOfWords
@@ -125,7 +130,7 @@ namespace DicewareGenerator.UI
             | System.Windows.Forms.AnchorStyles.Right)));
             this.uxControlsPanel.Controls.Add(this.uxOkBtn);
             this.uxControlsPanel.Controls.Add(this.uxCancelBtn);
-            this.uxControlsPanel.Location = new System.Drawing.Point(0, 212);
+            this.uxControlsPanel.Location = new System.Drawing.Point(0, 247);
             this.uxControlsPanel.Name = "uxControlsPanel";
             this.uxControlsPanel.Size = new System.Drawing.Size(336, 42);
             this.uxControlsPanel.TabIndex = 4;
@@ -135,8 +140,7 @@ namespace DicewareGenerator.UI
             this.uxFieldsPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.uxFieldsPanel.Controls.Add(this.uxExampleLabel);
-            this.uxFieldsPanel.Controls.Add(this.uxExamplePhraseLabel);
+            this.uxFieldsPanel.Controls.Add(this.uxSpecialCharsCheckBox);
             this.uxFieldsPanel.Controls.Add(this.uxSeparatorLabel);
             this.uxFieldsPanel.Controls.Add(this.uxSeparatorText);
             this.uxFieldsPanel.Controls.Add(this.uxWordListLabel);
@@ -146,25 +150,19 @@ namespace DicewareGenerator.UI
             this.uxFieldsPanel.Controls.Add(this.uxNumberOfWords);
             this.uxFieldsPanel.Location = new System.Drawing.Point(0, 0);
             this.uxFieldsPanel.Name = "uxFieldsPanel";
-            this.uxFieldsPanel.Size = new System.Drawing.Size(336, 212);
+            this.uxFieldsPanel.Size = new System.Drawing.Size(336, 170);
             this.uxFieldsPanel.TabIndex = 5;
             // 
-            // uxExampleLabel
+            // uxSpecialCharsCheckBox
             // 
-            this.uxExampleLabel.Location = new System.Drawing.Point(16, 144);
-            this.uxExampleLabel.Name = "uxExampleLabel";
-            this.uxExampleLabel.Size = new System.Drawing.Size(100, 23);
-            this.uxExampleLabel.TabIndex = 8;
-            this.uxExampleLabel.Text = "Example Phrase:";
-            // 
-            // uxExamplePhraseLabel
-            // 
-            this.uxExamplePhraseLabel.AutoEllipsis = true;
-            this.uxExamplePhraseLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.uxExamplePhraseLabel.Location = new System.Drawing.Point(24, 176);
-            this.uxExamplePhraseLabel.Name = "uxExamplePhraseLabel";
-            this.uxExamplePhraseLabel.Size = new System.Drawing.Size(296, 23);
-            this.uxExamplePhraseLabel.TabIndex = 7;
+            this.uxSpecialCharsCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.uxSpecialCharsCheckBox.Location = new System.Drawing.Point(24, 136);
+            this.uxSpecialCharsCheckBox.Name = "uxSpecialCharsCheckBox";
+            this.uxSpecialCharsCheckBox.Size = new System.Drawing.Size(296, 24);
+            this.uxSpecialCharsCheckBox.TabIndex = 7;
+            this.uxSpecialCharsCheckBox.Text = "Include randomised special characters?";
+            this.uxSpecialCharsCheckBox.UseVisualStyleBackColor = true;
+            this.uxSpecialCharsCheckBox.CheckedChanged += new System.EventHandler(this.OptionsChanged);
             // 
             // uxSeparatorLabel
             // 
@@ -214,11 +212,40 @@ namespace DicewareGenerator.UI
             this.uxStudlyCapsCheckBox.UseVisualStyleBackColor = true;
             this.uxStudlyCapsCheckBox.CheckedChanged += new System.EventHandler(this.OptionsChanged);
             // 
+            // uxExampleLabel
+            // 
+            this.uxExampleLabel.Location = new System.Drawing.Point(8, 8);
+            this.uxExampleLabel.Name = "uxExampleLabel";
+            this.uxExampleLabel.Size = new System.Drawing.Size(100, 23);
+            this.uxExampleLabel.TabIndex = 8;
+            this.uxExampleLabel.Text = "Example Phrase:";
+            // 
+            // uxExamplePhraseLabel
+            // 
+            this.uxExamplePhraseLabel.AutoEllipsis = true;
+            this.uxExamplePhraseLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.uxExamplePhraseLabel.Location = new System.Drawing.Point(8, 40);
+            this.uxExamplePhraseLabel.Name = "uxExamplePhraseLabel";
+            this.uxExamplePhraseLabel.Size = new System.Drawing.Size(320, 23);
+            this.uxExamplePhraseLabel.TabIndex = 7;
+            // 
+            // uxExamplePanel
+            // 
+            this.uxExamplePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.uxExamplePanel.Controls.Add(this.uxExamplePhraseLabel);
+            this.uxExamplePanel.Controls.Add(this.uxExampleLabel);
+            this.uxExamplePanel.Location = new System.Drawing.Point(0, 170);
+            this.uxExamplePanel.Name = "uxExamplePanel";
+            this.uxExamplePanel.Size = new System.Drawing.Size(336, 76);
+            this.uxExamplePanel.TabIndex = 9;
+            // 
             // Options
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(337, 251);
+            this.ClientSize = new System.Drawing.Size(337, 286);
+            this.Controls.Add(this.uxExamplePanel);
             this.Controls.Add(this.uxFieldsPanel);
             this.Controls.Add(this.uxControlsPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -232,6 +259,7 @@ namespace DicewareGenerator.UI
             this.uxControlsPanel.ResumeLayout(false);
             this.uxFieldsPanel.ResumeLayout(false);
             this.uxFieldsPanel.PerformLayout();
+            this.uxExamplePanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
