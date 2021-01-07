@@ -28,20 +28,23 @@ namespace DicewareGenerator.UI
         public Options()
         {
             InitializeComponent();
-            
-            uxWordlistComboBox.DataSource = Enum.GetValues(typeof(DicewareFileType));
-            m_presentationConfig = new Config();
-            m_generator = new PhraseGenerator(m_presentationConfig, new PresentationDicewareRepository(m_presentationConfig));
         }
         
         public Options(Config config) : this()
         {
             m_config = config;
             
+            m_presentationConfig = new Config();
+            m_generator = new PhraseGenerator(m_presentationConfig, new PresentationDicewareRepository(m_presentationConfig), new PresentationSpecialCharsRepository());
+            
+            DicewareFileType[] wordLists = { DicewareFileType.Short, DicewareFileType.Long };
+            uxWordlistComboBox.DataSource = wordLists;
+            
             uxNumberOfWords.Value = config.NumberOfWords;
             uxStudlyCapsCheckBox.Checked = config.StudlyCaps;
             uxWordlistComboBox.SelectedItem = config.Wordlist;
             uxSeparatorText.Text = config.Separator;
+            uxSpecialCharsCheckBox.Checked = config.SpecialChars;
             
             OptionsChanged();
         }
@@ -57,6 +60,7 @@ namespace DicewareGenerator.UI
             m_config.StudlyCaps = uxStudlyCapsCheckBox.Checked;
             m_config.Wordlist = (DicewareFileType)uxWordlistComboBox.SelectedItem;
             m_config.Separator = uxSeparatorText.Text;
+            m_config.SpecialChars = uxSpecialCharsCheckBox.Checked;
             
             Close();
         }
@@ -67,6 +71,7 @@ namespace DicewareGenerator.UI
             m_presentationConfig.StudlyCaps = uxStudlyCapsCheckBox.Checked;
             m_presentationConfig.Wordlist = (DicewareFileType)uxWordlistComboBox.SelectedItem;
             m_presentationConfig.Separator = uxSeparatorText.Text;
+            m_presentationConfig.SpecialChars = uxSpecialCharsCheckBox.Checked;
             
             uxExamplePhraseLabel.Text = m_generator.Generate().ReadString();
         }

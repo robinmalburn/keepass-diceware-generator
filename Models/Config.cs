@@ -33,6 +33,8 @@ namespace DicewareGenerator.Models
         
         public string Separator = " ";
         
+        public bool SpecialChars = false;
+        
         public Config()
         {
             

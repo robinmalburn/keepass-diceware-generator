@@ -24,12 +24,6 @@ namespace DicewareGenerator.Repositories
         DicewareFileType GetFileType();
         
         /// <summary>
-        /// Get the index length for the given repository type.
-        /// </summary>
-        /// <returns>The required length of the repository's index.</returns>
-        DicewareIndexLength GetIndexLength();
-        
-        /// <summary>
         /// Get <paramref name="count"/> random entries from the repository.
         /// </summary>
         /// <param name="count">The number of random references to return.</param>

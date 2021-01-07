@@ -21,15 +21,12 @@ namespace DicewareGenerator.Repositories
     {
         protected static readonly string[] m_filenames = new string[] { 
             "eff_short_wordlist.txt",
-            "eff_large_wordlist.txt"
+            "eff_large_wordlist.txt",
+            "special_chars.txt",
         };
         protected readonly Dictionary<string, string> m_data = new Dictionary<string, string>();
         protected RandomUtil m_random;
-        protected static ulong DiceSize {
-            get {
-                return 6;
-            }
-        }
+
 
         /// <summary>
         /// Returns the path for given Diceware filetype.
@@ -99,7 +96,7 @@ namespace DicewareGenerator.Repositories
             ulong[] indices = new ulong[len];
             
             for (int i = 0; i < len; i++) {
-                indices[i] = m_random.RandomRange(1, DiceSize);
+                indices[i] = m_random.RandomRange(7, 1);
             }
             
             return string.Join("", indices);

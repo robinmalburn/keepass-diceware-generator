@@ -8,27 +8,46 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 using System;
-using DicewareGenerator.Crypto;
+using System.Collections.Generic;
 
 namespace DicewareGenerator.Repositories
 {
     /// <summary>
-    /// IDicewareRepositoryFactory Interface.
+    /// Description of PresentationSpecialCharsRepository.
     /// </summary>
-    public interface IDicewareRepositoryFactory
+    public class PresentationSpecialCharsRepository : IDicewareSpecialCharsRepository
     {
-        /// <summary>
-        /// Make an instance of the Diceware Repository.
-        /// </summary>
-        /// <param name="random">Cryptographic Random Utility instance.</param>
-        /// <returns>Returns an instance of the Diceware Repository.</returns>
-        IDicewareRepository Make(RandomUtil random);
+        protected static string m_specialChars = "~!#$%^&*()-=+[]\\{}:;\"'<>?/022345678";
+        protected static Random m_rnd = new Random();
+            
+        public PresentationSpecialCharsRepository()
+        {
+        }
         
-        /// <summary>
-        /// Make an instance of the Special Chars Diceware Repository.
-        /// </summary>
-        /// <param name="random">Cryptographic Random Utility instance.</param>
-        /// <returns>Returns an instance of the Diceware Special Chars Repository.</returns>
-        IDicewareSpecialCharsRepository MakeSpecialChars(RandomUtil random);
+        public DicewareFileType GetFileType()
+        {
+            return DicewareFileType.Special;
+        }
+        
+        public List<string> GetRandom(int count)
+        {
+            List<string> result = new List<string>();
+            
+            for (int i = 0; i < count; i++) {
+                result.Add(m_specialChars[m_rnd.Next(m_specialChars.Length)].ToString());
+            }
+            
+            return result;
+        }
+        
+        public string Transform(string input)
+        {
+            int idx = m_rnd.Next(input.Length);
+            
+            char[] result = input.ToCharArray();
+            result[idx] = GetRandom(1)[0].ToCharArray()[0];
+            
+            return new string(result);
+        }
     }
 }

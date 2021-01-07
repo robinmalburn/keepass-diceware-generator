@@ -23,11 +23,13 @@ namespace DicewareGenerator.Generators
     {
         protected readonly Config m_config;
         protected readonly IDicewareRepository m_repo;
+        protected readonly IDicewareSpecialCharsRepository m_specialCharsRepo;
         
-        public PhraseGenerator(Config config, IDicewareRepository repository)
+        public PhraseGenerator(Config config, IDicewareRepository repository, IDicewareSpecialCharsRepository specialCharsRepo)
         {
             m_config = config;
             m_repo = repository;
+            m_specialCharsRepo = specialCharsRepo;
         }
         
         public ProtectedString Generate()
@@ -36,6 +38,10 @@ namespace DicewareGenerator.Generators
             
             if (m_config.StudlyCaps) {
                 words = words.Select(word => word.First().ToString().ToUpper() + word.Substring(1)).ToList();
+            }
+            
+            if (m_config.SpecialChars) {
+                words = words.Select(word => m_specialCharsRepo.Transform(word)).ToList();
             }
             
             string pwd = string.Join(m_config.Separator, words);

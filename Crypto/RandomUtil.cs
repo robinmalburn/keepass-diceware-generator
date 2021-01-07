@@ -27,11 +27,12 @@ namespace DicewareGenerator.Crypto
         /// <summary>
         /// Get a secure random number in the given range.
         /// </summary>
-        /// <param name="min">Minimum value</param>
         /// <param name="max">Maximum value</param>
-        /// <param name="inclusive">Maximum value inclusivity</param>
+        /// <param name="min">Minimum value</param>
         /// <returns>The random number.</returns>
-        public ulong RandomRange(ulong min, ulong max, bool inclusive = true)
+        /// <exception cref="ArgumentOutOfRangeException">If the mimimum value is less than zero or greater than the maximum value.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">If the maximum value is less than or equal to zero.</exception>
+        public ulong RandomRange(ulong max, ulong min = 0)
         {
             if (min < 0) {
                 throw new ArgumentOutOfRangeException("min", "Minimum value must be greater than or equal to zero.");
@@ -41,10 +42,10 @@ namespace DicewareGenerator.Crypto
                 throw new ArgumentOutOfRangeException("min", "Minimum value must be less than maximum value.");
             }
             
-            if (inclusive) {
-                max += 1;
+            if (max <= 0) {
+                throw new ArgumentOutOfRangeException("max", "Maximum value must be greater than zero.");
             }
-            
+
             ulong maxValid = UInt64.MaxValue - (UInt64.MaxValue % max);
             ulong val = m_cryptoRandom.GetRandomUInt64();
             

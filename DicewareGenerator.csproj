@@ -59,11 +59,14 @@
     <Compile Include="Repositories\AbstractFileDicewareRepository.cs" />
     <Compile Include="Repositories\DicewareEnums.cs" />
     <Compile Include="Repositories\DicewareRepositoryFactory.cs" />
+    <Compile Include="Repositories\FileSpecialCharsDicewareRepository.cs" />
     <Compile Include="Repositories\IDicewareRepository.cs" />
     <Compile Include="Repositories\IDicewareRepositoryFactory.cs" />
     <Compile Include="Repositories\FileLongDicewareRepository.cs" />
     <Compile Include="Repositories\FileShortDicewareRepository.cs" />
+    <Compile Include="Repositories\IDicewareSpecialCharsRepository.cs" />
     <Compile Include="Repositories\PresentationDicewareRepository.cs" />
+    <Compile Include="Repositories\PresentationSpecialCharsRepository.cs" />
     <Compile Include="UI\Options.cs" />
     <Compile Include="UI\Options.Designer.cs">
       <DependentUpon>Options.cs</DependentUpon>

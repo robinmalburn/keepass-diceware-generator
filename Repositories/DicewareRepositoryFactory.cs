@@ -33,5 +33,10 @@ namespace DicewareGenerator.Repositories
             
             return new FileLongDicewareRepository(random);
         }
+        
+        public IDicewareSpecialCharsRepository MakeSpecialChars(RandomUtil random)
+        {
+            return new FileSpecialCharsDicewareRepository(random);
+        }
     }
 }

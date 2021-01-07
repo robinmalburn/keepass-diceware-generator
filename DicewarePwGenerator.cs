@@ -34,8 +34,6 @@ namespace DicewareGenerator
             }
            );
         
-        protected static IDicewareRepository m_repository;
-        
         public override string Name
         {
             get { return "Diceware Generator"; }
@@ -54,10 +52,12 @@ namespace DicewareGenerator
         public override ProtectedString Generate(PwProfile prf, CryptoRandomStream crsRandomSource)
         {
             Config config = Config.deserialize(prf.CustomAlgorithmOptions);
+            RandomUtil random = new RandomUtil(crsRandomSource);
+            IDicewareRepositoryFactory factory = new DicewareRepositoryFactory(config);
+            IDicewareRepository repo = factory.Make(random);
+            IDicewareSpecialCharsRepository specialCharsRepo = factory.MakeSpecialChars(random);
             
-            RandomUtil rand = new RandomUtil(crsRandomSource);
-            IDicewareRepository repo = GetRepository(config, rand);
-            IPhraseGenerator generator = new PhraseGenerator(config, repo);
+            IPhraseGenerator generator = new PhraseGenerator(config, repo, specialCharsRepo);
 
             return generator.Generate();
         }
@@ -70,22 +70,5 @@ namespace DicewareGenerator
             
             return Config.serialize(config);
         }
-        
-        /// <summary>
-        /// Get the Diceware Repository instance.
-        /// </summary>
-        /// <param name="config">The plugin configuration.</param>
-        /// <param name="random">Cryptographic random range.</param>
-        /// <returns>Returns an instance of the Diceware repository.</returns>
-        protected IDicewareRepository GetRepository(Config config, RandomUtil random)
-        {
-            IDicewareRepositoryFactory repo = new DicewareRepositoryFactory(config);
-                
-            m_repository = repo.Make(random);
-            
-            return m_repository;
-        }
-
-      
     }
 }

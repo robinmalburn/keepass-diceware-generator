@@ -33,11 +33,6 @@ namespace DicewareGenerator.Repositories
             return m_config.Wordlist;
         }
         
-        public DicewareIndexLength GetIndexLength()
-        {
-            return (DicewareIndexLength)GetFileType();
-        }
-        
         public List<string> GetRandom(int count)
         {
             List<string> result = new List<string>();

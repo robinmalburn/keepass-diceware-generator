@@ -7,20 +7,40 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
+using System;
+using DicewareGenerator.Crypto;
 
 namespace DicewareGenerator.Repositories
 {
-    public enum DicewareFileType : int
+    /// <summary>
+    /// Special Character file based Diceware repository.
+    /// </summary>
+    public class FileSpecialCharsDicewareRepository: AbstractFileDicewareRepository, IDicewareSpecialCharsRepository
     {
-        Short,
-        Long,
-        Special,
-    }
-    
-    public enum DicewareIndexLength : int
-    {
-        Short = 4,
-        Long = 5,
-        Special = 2,
+        public FileSpecialCharsDicewareRepository(RandomUtil cryptoRandom)
+        {
+            m_random = cryptoRandom;
+            PopulateData(DicewareFileType.Special);
+        }
+        
+        public override DicewareIndexLength GetIndexLength()
+        {
+            return DicewareIndexLength.Special;
+        }
+        
+        public override DicewareFileType GetFileType() 
+        {
+            return DicewareFileType.Special;
+        }
+        
+        public string Transform(string input)
+        {
+            int idx = (int)m_random.RandomRange((ulong)input.Length);
+            
+            char[] result = input.ToCharArray();
+            result[idx] = GetRandom(1)[0].ToCharArray()[0];
+            
+            return new string(result);
+        }
     }
 }
