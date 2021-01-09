@@ -7,99 +7,122 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-using System;
-using System.Collections.Generic;
-using System.IO;
-using DicewareGenerator.Crypto;
-
 namespace DicewareGenerator.Repositories
-{ 
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.IO;
+    using DicewareGenerator.Crypto;
+    
     /// <summary>
     /// Abstract file based Diceware Repository.
     /// </summary>
     abstract public class AbstractFileDicewareRepository : IDicewareRepository
-    {
-        protected static readonly string[] m_filenames = new string[] { 
+    {        
+        /// <summary>
+        /// Filenames of local Diceware files.
+        /// </summary>
+        private static readonly ReadOnlyCollection<string> filenames = Array.AsReadOnly(new string[] { 
             "eff_short_wordlist.txt",
             "eff_large_wordlist.txt",
             "special_chars.txt",
-        };
-        protected readonly Dictionary<string, string> m_data = new Dictionary<string, string>();
-        protected RandomUtil m_random;
+        });
+        
+        /// <summary>
+        /// Dictionary of words indexed by their dice-like index.
+        /// </summary>
+        private Dictionary<string, string> data = new Dictionary<string, string>();
+       
+        /// <summary>
+        /// Gets or sets the cryptographic random utility.
+        /// </summary>
+        protected RandomUtil Random { get; set; }
 
+        /// <summary>
+        /// Get the index length for the given repository type.
+        /// </summary>
+        /// <returns>The require length of the repository's index.</returns>
+       public abstract DicewareIndexLength GetIndexLength();
+        
+        /// <summary>
+        /// Gets the file type the repository relates to.
+        /// </summary>
+        /// <returns>The repository's related <see cref="DicewareFileType"/></returns>
+        public abstract DicewareFileType GetFileType();
+        
+        /// <summary>
+        /// Get <paramref name="count"/> random entries from the repository.
+        /// </summary>
+        /// <param name="count">The number of random references to return.</param>
+        /// <returns>A list of random entries.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if count is less than or equal to zero.</exception>
+        public List<string> GetRandom(int count)
+        {
+            if (count <= 0)
+            {
+                throw new ArgumentOutOfRangeException("count");
+            }
+            
+            var result = new List<string>();
+            
+            for (int i = 0; i < count; i++)
+            {
+                result.Add(this.data[this.GetIndexString()]);
+            }
+            
+            return result;
+        }
 
         /// <summary>
         /// Returns the path for given Diceware filetype.
         /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
+        /// <param name="type">The type of file.</param>
+        /// <returns>Returns the path of the file for this repository.</returns>
         protected string GetFileTypePath(DicewareFileType type)
         {
-            string filename = m_filenames[(int)type];
+            string filename = filenames[(int)type];
             
             string basepath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
             
-            return  new Uri(Path.Combine(basepath, filename)).LocalPath;
+            return new Uri(Path.Combine(basepath, filename)).LocalPath;
         }
         
         /// <summary>
         /// Load the repository's file source.
         /// </summary>
-        /// <param name="type">The type of diceware file to load.</param>
+        /// <param name="type">The type of Diceware file to load.</param>
         protected void PopulateData(DicewareFileType type)
         {
-            if (m_data.Count > 0) 
+            if (this.data.Count > 0) 
             {
                 return;
             }
             
-            string path = GetFileTypePath(type);
+            string path = this.GetFileTypePath(type);
             
             foreach (string line in File.ReadLines(path))
             {
                 string[] parts = line.Split('\t');
-                m_data.Add(parts[0], parts[1]);
+                this.data.Add(parts[0], parts[1]);
             }
-        }
-        
-        /// <summary>
-        /// Get the index length for the given repository type.
-        /// </summary>
-        /// <returns>The require length of the repository's index.</returns>
-        abstract public DicewareIndexLength GetIndexLength();
-        
-        abstract public DicewareFileType GetFileType();
-        
-        public List<string> GetRandom(int count)
-        {
-            if (count <= 0) {
-                throw new ArgumentOutOfRangeException("count");
-            }
-            
-            List<string> result = new List<string>();
-            
-            for (int i = 0; i < count; i++) {
-                result.Add(m_data[GetIndexString()]);
-            }
-            
-            return result;
-            
         }
         
         /// <summary>
         /// Get a Diceware index string of the desired length.
         /// </summary>
-        /// <returns>A diceware string index</returns>
+        /// <returns>A Diceware string index</returns>
         protected string GetIndexString()
         {
-            int len = (int)GetIndexLength();
-            ulong[] indices = new ulong[len];
+            int len = (int)this.GetIndexLength();
+            var indices = new ulong[len];
             
-            for (int i = 0; i < len; i++) {
-                indices[i] = m_random.RandomRange(7, 1);
+            for (int i = 0; i < len; i++)
+            {
+                indices[i] = this.Random.RandomRange(7, 1);
             }
             
-            return string.Join("", indices);
+            return string.Join(string.Empty, indices);
         }
     }
 }

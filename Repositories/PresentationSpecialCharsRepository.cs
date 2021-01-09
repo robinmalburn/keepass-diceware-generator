@@ -7,45 +7,78 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-using System;
-using System.Collections.Generic;
 
 namespace DicewareGenerator.Repositories
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    
     /// <summary>
     /// Description of PresentationSpecialCharsRepository.
     /// </summary>
     public class PresentationSpecialCharsRepository : IDicewareSpecialCharsRepository
     {
-        protected static string m_specialChars = "~!#$%^&*()-=+[]\\{}:;\"'<>?/022345678";
-        protected static Random m_rnd = new Random();
-            
+        /// <summary>
+        /// The special characters to use.
+        /// </summary>
+        private static readonly ReadOnlyCollection<char> SpecialChars = Array.AsReadOnly("~!#$%^&*()-=+[]\\{}:;\"'<>?/022345678".ToCharArray());
+        
+        /// <summary>
+        /// Random number generator to use.
+        /// </summary>
+        private static readonly Random Random = new Random();
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PresentationSpecialCharsRepository"/> class.
+        /// </summary>
         public PresentationSpecialCharsRepository()
         {
         }
         
+        /// <summary>
+        /// Gets the file type the repository relates to.
+        /// </summary>
+        /// <returns>The repository's related <see cref="DicewareFileType"/></returns>
         public DicewareFileType GetFileType()
         {
             return DicewareFileType.Special;
         }
         
+        /// <summary>
+        /// Get <paramref name="count"/> random entries from the repository.
+        /// </summary>
+        /// <param name="count">The number of random references to return.</param>
+        /// <returns>A list of random entries.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if count is less than or equal to zero.</exception>
         public List<string> GetRandom(int count)
         {
-            List<string> result = new List<string>();
+            if (count <= 0) 
+            {
+                throw new ArgumentOutOfRangeException("count", "Count must be greater than zero");
+            }
             
-            for (int i = 0; i < count; i++) {
-                result.Add(m_specialChars[m_rnd.Next(m_specialChars.Length)].ToString());
+            var result = new List<string>();
+            
+            for (int i = 0; i < count; i++) 
+            {
+                result.Add(SpecialChars[Random.Next(SpecialChars.Count)].ToString());
             }
             
             return result;
         }
         
+        /// <summary>
+        /// Apply random transformations to the given input string.
+        /// </summary>
+        /// <param name="input">The string to transform</param>
+        /// <returns>The transformed string</returns>
         public string Transform(string input)
         {
-            int idx = m_rnd.Next(input.Length);
+            int idx = Random.Next(input.Length);
             
             char[] result = input.ToCharArray();
-            result[idx] = GetRandom(1)[0].ToCharArray()[0];
+            result[idx] = this.GetRandom(1)[0].ToCharArray()[0];
             
             return new string(result);
         }

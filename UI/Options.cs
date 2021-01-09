@@ -7,79 +7,117 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-using System;
-using System.Drawing;
-using System.Windows.Forms;
-using DicewareGenerator.Models;
-using DicewareGenerator.Repositories;
-using DicewareGenerator.Generators;
 
 namespace DicewareGenerator.UI
 {
+    using System;
+    using System.Windows.Forms;
+    using DicewareGenerator.Generators;
+    using DicewareGenerator.Models;
+    using DicewareGenerator.Repositories;
+
     /// <summary>
-    /// Description of Options.
+    /// Options configuration form.
     /// </summary>
     public partial class Options : Form
     {
-        protected readonly Config m_config;
-        protected readonly Config m_presentationConfig;
-        protected readonly IPhraseGenerator m_generator;
+        /// <summary>
+        /// Shared configuration object with calling window.
+        /// </summary>
+        private Config config;
         
+        /// <summary>
+        /// Configuration object used for presentation preview. 
+        /// </summary>
+        private Config presentationConfig;
+        
+        /// <summary>
+        /// Phrase generator used for presentation preview.
+        /// </summary>
+        private IPhraseGenerator generator;
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Options"/> class.
+        /// </summary>
         public Options()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
         
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Options"/> class.
+        /// </summary>
+        /// <param name="config">The shared configuration object to be updated.</param>
         public Options(Config config) : this()
         {
-            m_config = config;
+            this.config = config;
             
-            m_presentationConfig = new Config();
-            m_generator = new PhraseGenerator(m_presentationConfig, new PresentationDicewareRepository(m_presentationConfig), new PresentationSpecialCharsRepository());
+            this.presentationConfig = new Config();
+            this.generator = new PhraseGenerator(
+                this.presentationConfig, 
+                new PresentationDicewareRepository(this.presentationConfig), 
+                new PresentationSpecialCharsRepository());
             
             DicewareFileType[] wordLists = { DicewareFileType.Short, DicewareFileType.Long };
-            uxWordlistComboBox.DataSource = wordLists;
+            this.uxWordlistComboBox.DataSource = wordLists;
             
-            uxNumberOfWords.Value = config.NumberOfWords;
-            uxStudlyCapsCheckBox.Checked = config.StudlyCaps;
-            uxWordlistComboBox.SelectedItem = config.Wordlist;
-            uxSeparatorText.Text = config.Separator;
-            uxSpecialCharsCheckBox.Checked = config.SpecialChars;
+            this.uxNumberOfWords.Value = config.NumberOfWords;
+            this.uxStudlyCapsCheckBox.Checked = config.StudlyCaps;
+            this.uxWordlistComboBox.SelectedItem = config.Wordlist;
+            this.uxSeparatorText.Text = config.Separator;
+            this.uxSpecialCharsCheckBox.Checked = config.SpecialChars;
             
-            OptionsChanged();
+            this.UpdatePreview();
         }
         
-        void UxCancelBtnClick(object sender, EventArgs e)
+        /// <summary>
+        /// Handles updating the preview with the latest user selected options.
+        /// </summary>
+        private void UpdatePreview()
         {
-            Close();
-        }
-        
-        void UxOKBtnClick(object sender, EventArgs e)
-        {
-            m_config.NumberOfWords = uxNumberOfWords.Value;
-            m_config.StudlyCaps = uxStudlyCapsCheckBox.Checked;
-            m_config.Wordlist = (DicewareFileType)uxWordlistComboBox.SelectedItem;
-            m_config.Separator = uxSeparatorText.Text;
-            m_config.SpecialChars = uxSpecialCharsCheckBox.Checked;
+            this.presentationConfig.NumberOfWords = this.uxNumberOfWords.Value;
+            this.presentationConfig.StudlyCaps = this.uxStudlyCapsCheckBox.Checked;
+            this.presentationConfig.Wordlist = (DicewareFileType)this.uxWordlistComboBox.SelectedItem;
+            this.presentationConfig.Separator = this.uxSeparatorText.Text;
+            this.presentationConfig.SpecialChars = this.uxSpecialCharsCheckBox.Checked;
             
-            Close();
+            this.uxExamplePhraseLabel.Text = this.generator.Generate().ReadString();
         }
         
-        protected void OptionsChanged()
+        /// <summary>
+        /// Cancel button click event handler.
+        /// </summary>
+        /// <param name="sender">The sender object</param>
+        /// <param name="e">The event args</param>
+        private void UxCancelBtnClick(object sender, EventArgs e)
         {
-            m_presentationConfig.NumberOfWords = uxNumberOfWords.Value;
-            m_presentationConfig.StudlyCaps = uxStudlyCapsCheckBox.Checked;
-            m_presentationConfig.Wordlist = (DicewareFileType)uxWordlistComboBox.SelectedItem;
-            m_presentationConfig.Separator = uxSeparatorText.Text;
-            m_presentationConfig.SpecialChars = uxSpecialCharsCheckBox.Checked;
+            this.Close();
+        }
+        
+        /// <summary>
+        /// OK button click event handler.
+        /// </summary>
+        /// <param name="sender">The sender object</param>
+        /// <param name="e">The event args</param>
+        private void UxOKBtnClick(object sender, EventArgs e)
+        {
+            this.config.NumberOfWords = this.uxNumberOfWords.Value;
+            this.config.StudlyCaps = this.uxStudlyCapsCheckBox.Checked;
+            this.config.Wordlist = (DicewareFileType)this.uxWordlistComboBox.SelectedItem;
+            this.config.Separator = this.uxSeparatorText.Text;
+            this.config.SpecialChars = this.uxSpecialCharsCheckBox.Checked;
             
-            uxExamplePhraseLabel.Text = m_generator.Generate().ReadString();
+            this.Close();
         }
         
-        protected void OptionsChanged(object sender, EventArgs e)
+        /// <summary>
+        /// Generic options changed event handler.
+        /// </summary>
+        /// <param name="sender">The sender object</param>
+        /// <param name="e">The event args</param>
+        private void OptionsChanged(object sender, EventArgs e)
         {
-            OptionsChanged();
+            this.UpdatePreview();
         }
-
     }
 }

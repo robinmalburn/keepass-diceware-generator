@@ -17,7 +17,7 @@ namespace DicewareGenerator.Generators
     using KeePassLib.Security;
     
     /// <summary>
-    /// Description of DicewareGenerator.
+    /// Phrase generator; handles generating phrases based on the given configuration and pulled from the given repos.
     /// </summary>
     public class PhraseGenerator : IPhraseGenerator
     {
@@ -37,7 +37,7 @@ namespace DicewareGenerator.Generators
         protected readonly IDicewareSpecialCharsRepository SpecialCharsRepo;
         
         /// <summary>
-        /// Initializes a new phrase generator.
+        /// Initializes a new instance of <see cref="PhraseGenerator"/> class.
         /// </summary>
         /// <param name="config">A config instance.</param>
         /// <param name="repository">A Diceware repository instance.</param>

@@ -10,17 +10,45 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 namespace DicewareGenerator.Repositories
 {
+    /// <summary>
+    /// Filetype enums.
+    /// </summary>
     public enum DicewareFileType : int
     {
+        /// <summary>
+        /// Represents a short filetype.
+        /// </summary>
         Short,
+        
+        /// <summary>
+        /// Represents a long or large filetype.
+        /// </summary>
         Long,
+        
+        /// <summary>
+        /// Represents a special characters filetype.
+        /// </summary>
         Special,
     }
     
+    /// <summary>
+    /// Index length enums.
+    /// </summary>
     public enum DicewareIndexLength : int
     {
+        /// <summary>
+        /// Represents a short, 4 digit index.
+        /// </summary>
         Short = 4,
+        
+        /// <summary>
+        /// Represents a long or large, 5 digit index.
+        /// </summary>
         Long = 5,
+        
+        /// <summary>
+        /// Represents a special character, 2 digit index.
+        /// </summary>
         Special = 2,
     }
 }

@@ -7,40 +7,56 @@
 
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-using System;
-using KeePass.Plugins;
 
 namespace DicewareGenerator
 {
+    using System;
+    using KeePass.Plugins;
+
     /// <summary>
     /// Plugin entry point class.
     /// </summary>
     public class DicewareGeneratorExt: Plugin
     {
-        private IPluginHost m_host = null;
-        private DicewarePwGenerator m_generator = null;
+        /// <summary>
+        /// Plugin host container.
+        /// </summary>
+        private IPluginHost host = null;
+        
+        /// <summary>
+        /// Password generator instance.
+        /// </summary>
+        private DicewarePwGenerator generator = null;
 
+        /// <summary>
+        /// Initializes the plugin.
+        /// </summary>
+        /// <param name="host">The Keepass plugin host.</param>
+        /// <returns>True on successful initalization, false otherwise.</returns>
         public override bool Initialize(IPluginHost host)
         {
-            if(host == null) 
+            if (host == null) 
             {
                 return false;
             }
             
-            m_host = host;
-            m_generator = new DicewarePwGenerator();
-            m_host.PwGeneratorPool.Add(m_generator);
+            this.host = host;
+            this.generator = new DicewarePwGenerator();
+            this.host.PwGeneratorPool.Add(this.generator);
             
             return true;
         }
         
+        /// <summary>
+        /// Called on plugin termination.
+        /// </summary>
         public override void Terminate()
         {
-            if (m_host != null)
+            if (this.host != null)
             {
-                m_host.PwGeneratorPool.Remove(m_generator.Uuid);
-                m_generator = null;
-                m_host = null;
+                this.host.PwGeneratorPool.Remove(this.generator.Uuid);
+                this.generator = null;
+                this.host = null;
             }
         }
     }

@@ -7,39 +7,71 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-using System;
-using System.Collections.Generic;
-using DicewareGenerator.Models;
 
 namespace DicewareGenerator.Repositories
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using DicewareGenerator.Models;
+
     /// <summary>
     /// Simple presentation repository for returning dummy values.
     /// </summary>
     public class PresentationDicewareRepository : IDicewareRepository
     {
-        protected static readonly string[] m_shortWords = { "foo", "bar", "baz" };
-        protected static readonly string[] m_longWords = { "epiphany", "season", "richochet" };
+        /// <summary>
+        /// Short words to be used by the repository.
+        /// </summary>
+        private static readonly ReadOnlyCollection<string> ShortWords = Array.AsReadOnly(new string[] { "foo", "bar", "baz" });
         
-        protected readonly Config m_config;
+        /// <summary>
+        /// Long words to be used by the repository.
+        /// </summary>
+        private static readonly ReadOnlyCollection<string> LongWords = Array.AsReadOnly(new string[] { "epiphany", "season", "richochet" });
         
+        /// <summary>
+        /// The configuration to be used.
+        /// </summary>
+        private readonly Config config;
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PresentationDicewareRepository"/> class.
+        /// </summary>
+        /// <param name="config">The configuration</param>
         public PresentationDicewareRepository(Config config) 
         {
-            m_config = config;
+            this.config = config;
         }
         
+        /// <summary>
+        /// Gets the file type the repository relates to.
+        /// </summary>
+        /// <returns>The repository's related <see cref="DicewareFileType"/></returns>
         public DicewareFileType GetFileType()
         {
-            return m_config.Wordlist;
+            return this.config.Wordlist;
         }
         
+        /// <summary>
+        /// Get <paramref name="count"/> random entries from the repository.
+        /// </summary>
+        /// <param name="count">The number of random references to return.</param>
+        /// <returns>A list of random entries.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if count is less than or equal to zero.</exception>
         public List<string> GetRandom(int count)
         {
-            List<string> result = new List<string>();
+            if (count <= 0) 
+            {
+                throw new ArgumentOutOfRangeException("count", "Count must be greater than zero");
+            }
+                        
+            var result = new List<string>();
             
-            string[] words = GetFileType() == DicewareFileType.Short ? m_shortWords : m_longWords;
+            var words = this.GetFileType() == DicewareFileType.Short ? ShortWords : LongWords;
             
-            for (int i = 0;  i < count; i++) {
+            for (int i = 0;  i < count; i++)
+            {
                 result.Add(words[i % 3]);
             }
             

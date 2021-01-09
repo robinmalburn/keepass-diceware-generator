@@ -7,35 +7,53 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-using System;
-using DicewareGenerator.Crypto;
 
 namespace DicewareGenerator.Repositories
 {
+    using System;
+    using DicewareGenerator.Crypto;
+    
     /// <summary>
     /// Special Character file based Diceware repository.
     /// </summary>
     public class FileSpecialCharsDicewareRepository: AbstractFileDicewareRepository, IDicewareSpecialCharsRepository
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FileSpecialCharsDicewareRepository"/> class.
+        /// </summary>
+        /// <param name="cryptoRandom">The cryptographic random utility.</param>
         public FileSpecialCharsDicewareRepository(RandomUtil cryptoRandom)
         {
-            m_random = cryptoRandom;
-            PopulateData(DicewareFileType.Special);
+            this.Random = cryptoRandom;
+            this.PopulateData(DicewareFileType.Special);
         }
         
+        /// <summary>
+        /// Get the index length for the given repository type.
+        /// </summary>
+        /// <returns>The require length of the repository's index.</returns>
         public override DicewareIndexLength GetIndexLength()
         {
             return DicewareIndexLength.Special;
         }
         
+        /// <summary>
+        /// Gets the file type the repository relates to.
+        /// </summary>
+        /// <returns>The repository's related <see cref="DicewareFileType"/></returns>
         public override DicewareFileType GetFileType() 
         {
             return DicewareFileType.Special;
         }
         
+        /// <summary>
+        /// Apply random transformations to the given input string.
+        /// </summary>
+        /// <param name="input">The string to transform</param>
+        /// <returns>The transformed string</returns>
         public string Transform(string input)
         {
-            int idx = (int)m_random.RandomRange((ulong)input.Length);
+            int idx = (int)Random.RandomRange((ulong)input.Length);
             
             char[] result = input.ToCharArray();
             result[idx] = GetRandom(1)[0].ToCharArray()[0];

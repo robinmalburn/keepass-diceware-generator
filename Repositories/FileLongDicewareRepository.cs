@@ -7,27 +7,40 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-using System;
-using DicewareGenerator.Crypto;
 
 namespace DicewareGenerator.Repositories
 {
+    using System;
+    using DicewareGenerator.Crypto;
+
     /// <summary>
     /// Long file based diceware repository implementation.
     /// </summary>
     public class FileLongDicewareRepository : AbstractFileDicewareRepository
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FileLongDicewareRepository"/> class.
+        /// </summary>
+        /// <param name="random">The cryptographic random utility.</param>
         public FileLongDicewareRepository(RandomUtil random)
         {
-           m_random = random;
-           PopulateData(DicewareFileType.Long);
+           this.Random = random;
+           this.PopulateData(DicewareFileType.Long);
         }
         
+        /// <summary>
+        /// Get the index length for the given repository type.
+        /// </summary>
+        /// <returns>The require length of the repository's index.</returns>
         public override DicewareIndexLength GetIndexLength()
         {
             return DicewareIndexLength.Long;
         }
         
+        /// <summary>
+        /// Gets the file type the repository relates to.
+        /// </summary>
+        /// <returns>The repository's related <see cref="DicewareFileType"/></returns>
         public override DicewareFileType GetFileType() 
         {
             return DicewareFileType.Long;
