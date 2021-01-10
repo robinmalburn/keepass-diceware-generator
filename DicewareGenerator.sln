@@ -2,7 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 # SharpDevelop 5.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DicewareGenerator", "DicewareGenerator.csproj", "{6DF08522-8710-4516-9B1D-71375C7E7684}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DicewareGenerator", "DicewareGenerator\DicewareGenerator.csproj", "{6DF08522-8710-4516-9B1D-71375C7E7684}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DicewareGeneratorTests", "DicewareGeneratorTests\DicewareGeneratorTests.csproj", "{5A0627A5-C78B-4771-A65E-44C4631BC3EA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,5 +16,9 @@ Global
 		{6DF08522-8710-4516-9B1D-71375C7E7684}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DF08522-8710-4516-9B1D-71375C7E7684}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DF08522-8710-4516-9B1D-71375C7E7684}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A0627A5-C78B-4771-A65E-44C4631BC3EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A0627A5-C78B-4771-A65E-44C4631BC3EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A0627A5-C78B-4771-A65E-44C4631BC3EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A0627A5-C78B-4771-A65E-44C4631BC3EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

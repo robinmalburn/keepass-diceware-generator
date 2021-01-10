@@ -82,9 +82,12 @@
     <Folder Include="Resources" />
   </ItemGroup>
   <ItemGroup>
-    <None Include=".gitignore" />
-    <None Include="LICENSE" />
-    <None Include="README.md" />
+    <None Include="..\LICENSE">
+      <Link>LICENSE</Link>
+    </None>
+    <None Include="..\README.md">
+      <Link>README.md</Link>
+    </None>
     <None Include="Resources\eff_large_wordlist.txt" />
     <None Include="Resources\eff_short_wordlist.txt" />
     <None Include="Resources\KeePass.exe" />
