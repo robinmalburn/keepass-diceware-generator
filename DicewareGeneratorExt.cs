@@ -29,10 +29,16 @@ namespace DicewareGenerator
         private DicewarePwGenerator generator = null;
 
         /// <summary>
-        /// Initializes the plugin.
+        /// The <c>Initialize</c> method is called by KeePass when
+        /// you should initialize your plugin.
         /// </summary>
-        /// <param name="host">The Keepass plugin host.</param>
-        /// <returns>True on successful initalization, false otherwise.</returns>
+        /// <param name="host">Plugin host interface. Through this
+        /// interface you can access the KeePass main window, the
+        /// currently open database, etc.</param>
+        /// <returns>You must return <c>true</c> in order to signal
+        /// successful initialization. If you return <c>false</c>,
+        /// KeePass unloads your plugin (without calling the
+        /// <c>Terminate</c> method of your plugin).</returns>
         public override bool Initialize(IPluginHost host)
         {
             if (host == null) 
@@ -47,8 +53,10 @@ namespace DicewareGenerator
             return true;
         }
         
-        /// <summary>
-        /// Called on plugin termination.
+         /// <summary>
+        /// The <c>Terminate</c> method is called by KeePass when
+        /// you should free all resources, close files/streams,
+        /// remove event handlers, etc.
         /// </summary>
         public override void Terminate()
         {
