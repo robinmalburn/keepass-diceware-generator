@@ -88,6 +88,7 @@
     <None Include="Resources\eff_short_wordlist.txt" />
     <None Include="Resources\KeePass.exe" />
     <None Include="Resources\special_chars.txt" />
+    <None Include="Resources\Version.txt" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="UI\Options.resx">

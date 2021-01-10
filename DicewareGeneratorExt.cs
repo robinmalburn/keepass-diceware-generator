@@ -67,5 +67,14 @@ namespace DicewareGenerator
                 this.host = null;
             }
         }
+        
+        /// <summary>
+        /// Get the URL of a version information file. See
+        /// https://keepass.info/help/v2_dev/plg_index.html#upd
+        /// </summary>
+        public override string UpdateUrl
+        {
+            get { return "https://raw.githubusercontent.com/robinmalburn/keepass-diceware-generator/master/Resources/Version.txt"; }
+        }
     }
 }
