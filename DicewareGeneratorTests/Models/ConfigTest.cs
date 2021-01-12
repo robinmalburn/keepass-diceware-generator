@@ -7,20 +7,24 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-using System;
-using NUnit.Framework;
-using DicewareGenerator.Models;
-using DicewareGenerator.Repositories;
 
 namespace DicewareGeneratorTests.Models
 {
+    using System;
+    using DicewareGenerator.Models;
+    using DicewareGenerator.Repositories;
+    using NUnit.Framework;
+    
+    /// <summary>
+    /// Tests for the <see cref="Config"/> class.
+    /// </summary>
     [TestFixture]
     public class ConfigTest
     {
         /// <summary>
         /// The default serialized representation of the config.
         /// </summary>
-        const string DefaultSerializedConfig = "<?xml version=\"1.0\" encoding=\"utf-8\"?><Config xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"><NumberOfWords>6</NumberOfWords><StudlyCaps>false</StudlyCaps><Wordlist>Short</Wordlist><Separator> </Separator><SpecialChars>false</SpecialChars></Config>";
+        private const string DefaultSerializedConfig = "<?xml version=\"1.0\" encoding=\"utf-8\"?><Config xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"><NumberOfWords>6</NumberOfWords><StudlyCaps>false</StudlyCaps><Wordlist>Short</Wordlist><Separator> </Separator><SpecialChars>false</SpecialChars></Config>";
         
         /// <summary>
         /// Test the default values set upon constructing a new instance.
@@ -59,8 +63,8 @@ namespace DicewareGeneratorTests.Models
             config.Wordlist = DicewareFileType.Long;
             config.Separator = string.Empty;
             
-            const string expected = "<?xml version=\"1.0\" encoding=\"utf-8\"?><Config xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"><NumberOfWords>3</NumberOfWords><StudlyCaps>true</StudlyCaps><Wordlist>Long</Wordlist><Separator /><SpecialChars>false</SpecialChars></Config>";
-            Assert.AreEqual(expected, Config.Serialize(config), "Assert that serializing the given config produces the expected XML.");
+            const string Expected = "<?xml version=\"1.0\" encoding=\"utf-8\"?><Config xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"><NumberOfWords>3</NumberOfWords><StudlyCaps>true</StudlyCaps><Wordlist>Long</Wordlist><Separator /><SpecialChars>false</SpecialChars></Config>";
+            Assert.AreEqual(Expected, Config.Serialize(config), "Assert that serializing the given config produces the expected XML.");
         }
         
         /// <summary>
@@ -69,7 +73,7 @@ namespace DicewareGeneratorTests.Models
         [Test]
         public void TestDeserializeInvalidSource()
         {
-            var config = Config.Deserialize(String.Empty);
+            var config = Config.Deserialize(string.Empty);
             
             Assert.IsInstanceOf(typeof(Config), config, "Assert that providing an invalid string results in a valid, default configuration.");
         }
@@ -80,7 +84,7 @@ namespace DicewareGeneratorTests.Models
         [Test]
         public void TestDefaultDeserializedValues()
         {
-            var config = Config.Deserialize(String.Empty);
+            var config = Config.Deserialize(string.Empty);
             
             Assert.AreEqual(6, config.NumberOfWords, "Assert that the default NumberOfWords matches expectations.");
             Assert.AreEqual(false, config.StudlyCaps, "Assert that StudlyCaps are disabled by default.");
@@ -95,8 +99,8 @@ namespace DicewareGeneratorTests.Models
         [Test]
         public void TestDeserialize()
         {
-            const string xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?><Config xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"><NumberOfWords>3</NumberOfWords><StudlyCaps>true</StudlyCaps><Wordlist>Long</Wordlist><Separator /><SpecialChars>false</SpecialChars></Config>";
-            var config = Config.Deserialize(xml);
+            const string RawXml = "<?xml version=\"1.0\" encoding=\"utf-8\"?><Config xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"><NumberOfWords>3</NumberOfWords><StudlyCaps>true</StudlyCaps><Wordlist>Long</Wordlist><Separator /><SpecialChars>false</SpecialChars></Config>";
+            var config = Config.Deserialize(RawXml);
             
             Assert.IsInstanceOf(typeof(Config), config, "Assert that a valid config is returned.");
             Assert.AreEqual(3, config.NumberOfWords, "Assert that the NumberOfWords matches expectations.");
