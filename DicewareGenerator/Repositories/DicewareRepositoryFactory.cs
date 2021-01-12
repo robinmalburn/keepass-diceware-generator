@@ -20,17 +20,24 @@ using DicewareGenerator.Models;
     public class DicewareRepositoryFactory : IDicewareRepositoryFactory
     {      
         /// <summary>
-        /// The factory's configuration.
+        /// The factory's user configuration.
         /// </summary>
-        protected readonly Config Config;
+        private readonly UserConfig UserConfig;
+        
+        /// <summary>
+        /// The system configuration.
+        /// </summary>
+        private readonly SystemConfig SysConfig;
         
         /// <summary>
         /// Initializes a new instance of the <see cref="DicewareRepositoryFactory"/> class.
         /// </summary>
-        /// <param name="config">The <see cref="Config"/> for the factory.</param>
-        public DicewareRepositoryFactory(Config config)
+        /// <param name="config">The <see cref="UserConfig"/> for the factory.</param>
+        /// <param name="sysConfig">The <see cref="SystemConfig"/>.</param>
+        public DicewareRepositoryFactory(UserConfig config, SystemConfig sysConfig)
         {
-            this.Config = config;
+            this.UserConfig = config;
+            this.SysConfig = sysConfig;
         }
         
         /// <summary>
@@ -40,12 +47,12 @@ using DicewareGenerator.Models;
         /// <returns>Returns an instance of the Diceware Repository.</returns>
         public IDicewareRepository Make(RandomUtil random)
         {
-            if (this.Config.Wordlist == DicewareFileType.Short) 
+            if (this.UserConfig.Wordlist == DicewareFileType.Short) 
             {
-                return new FileShortDicewareRepository(random);
+                return new FileShortDicewareRepository(this.SysConfig.GetPathForFileType(this.UserConfig.Wordlist), random);
             }
             
-            return new FileLongDicewareRepository(random);
+            return new FileLongDicewareRepository(this.SysConfig.GetPathForFileType(this.UserConfig.Wordlist), random);
         }
         
         /// <summary>
@@ -55,7 +62,7 @@ using DicewareGenerator.Models;
         /// <returns>Returns an instance of the Diceware Special Chars Repository.</returns>
         public IDicewareSpecialCharsRepository MakeSpecialChars(RandomUtil random)
         {
-            return new FileSpecialCharsDicewareRepository(random);
+            return new FileSpecialCharsDicewareRepository(this.SysConfig.GetPathForFileType(DicewareFileType.Special), random);
         }
     }
 }

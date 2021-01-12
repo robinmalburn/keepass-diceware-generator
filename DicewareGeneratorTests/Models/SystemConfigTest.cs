@@ -7,56 +7,40 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-namespace DicewareGeneratorTests.Generators
+namespace DicewareGeneratorTests.Models
 {
     using System;
-    using DicewareGenerator.Generators;
+    using System.IO;
+    using NUnit.Framework;
     using DicewareGenerator.Models;
     using DicewareGenerator.Repositories;
-    using DicewareGeneratorTests.Repositories;
-    using NUnit.Framework;
 
-    /// <summary>
-    /// Tests for the <see cref="PhraseGenerator"/> class.
-    /// </summary>
     [TestFixture]
-    public class PhraseGeneratorTest
+    public class SystemConfigTest
     {
         /// <summary>
-        /// <see cref="Config"/> model instance.
+        /// Test that default values are set as expected.
         /// </summary>
-        private UserConfig config;
-        
-        /// <summary>
-        /// Stub special character repository.
-        /// </summary>
-        private IDicewareSpecialCharsRepository specialCharsRepo;
-
-        /// <summary>
-        /// Stub phrase repository.
-        /// </summary>
-        private IDicewareRepository repo;
-        
-        /// <summary>
-        /// Sets up the test case.
-        /// </summary>
-        [SetUp]
-        public void SetUp()
+        [Test]
+        public void TestDefaultValues()
         {
-            this.config = new UserConfig();
-            this.repo = new StubDicewareRepository();
-            this.specialCharsRepo = new StubSpecialCharsRepository();
+            var sysConfig = new SystemConfig();
+            var expected = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
+            
+            Assert.AreEqual(expected, sysConfig.Basepath, "Assert that the basepath defaults to the assembly codebase.");
         }
         
         /// <summary>
-        /// Tests generating a pass phrase.
+        /// Tests getting the path for a given filetype.
         /// </summary>
         [Test]
-        public void testGenerate()
+        public void TestGetPathForFileType()
         {
-            var generator = new PhraseGenerator(this.config, this.repo, this.specialCharsRepo);
+            var sysConfig = new SystemConfig();
+            sysConfig.Basepath = "../../../Resources";
+            var expected = Path.GetFullPath("../../../Resources/special_chars.txt");
             
-            Assert.AreEqual("foo foo foo foo foo foo", generator.Generate().ReadString(), "Assert that the generated password matches expectations.");
+            Assert.AreEqual(expected, sysConfig.GetPathForFileType(DicewareFileType.Special), "Assert that the expected path for a given filetype is returned.");
         }
     }
 }

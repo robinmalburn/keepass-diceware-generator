@@ -55,7 +55,8 @@
     <Compile Include="DicewareGeneratorExt.cs" />
     <Compile Include="Generators\PhraseGenerator.cs" />
     <Compile Include="Generators\IPhraseGenerator.cs" />
-    <Compile Include="Models\Config.cs" />
+    <Compile Include="Models\SystemConfig.cs" />
+    <Compile Include="Models\UserConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\AbstractFileDicewareRepository.cs" />
     <Compile Include="Repositories\DicewareEnums.cs" />

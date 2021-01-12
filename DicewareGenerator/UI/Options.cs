@@ -24,12 +24,12 @@ namespace DicewareGenerator.UI
         /// <summary>
         /// Shared configuration object with calling window.
         /// </summary>
-        private Config config;
+        private UserConfig config;
         
         /// <summary>
         /// Configuration object used for presentation preview. 
         /// </summary>
-        private Config presentationConfig;
+        private UserConfig presentationConfig;
         
         /// <summary>
         /// Phrase generator used for presentation preview.
@@ -48,11 +48,11 @@ namespace DicewareGenerator.UI
         /// Initializes a new instance of the <see cref="Options"/> class.
         /// </summary>
         /// <param name="config">The shared configuration object to be updated.</param>
-        public Options(Config config) : this()
+        public Options(UserConfig config) : this()
         {
             this.config = config;
             
-            this.presentationConfig = new Config();
+            this.presentationConfig = new UserConfig();
             this.generator = new PhraseGenerator(
                 this.presentationConfig, 
                 new PresentationDicewareRepository(this.presentationConfig), 

@@ -11,7 +11,6 @@ namespace DicewareGenerator.Repositories
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.IO;
     using DicewareGenerator.Crypto;
     
@@ -21,15 +20,6 @@ namespace DicewareGenerator.Repositories
     abstract public class AbstractFileDicewareRepository : IDicewareRepository
     {        
         /// <summary>
-        /// Filenames of local Diceware files.
-        /// </summary>
-        private static readonly ReadOnlyCollection<string> filenames = Array.AsReadOnly(new string[] { 
-            "eff_short_wordlist.txt",
-            "eff_large_wordlist.txt",
-            "special_chars.txt",
-        });
-        
-        /// <summary>
         /// Dictionary of words indexed by their dice-like index.
         /// </summary>
         private Dictionary<string, string> data = new Dictionary<string, string>();
@@ -38,7 +28,12 @@ namespace DicewareGenerator.Repositories
         /// Gets or sets the cryptographic random utility.
         /// </summary>
         protected RandomUtil Random { get; set; }
-
+        
+        /// <summary>
+        /// Gets the Path for the related file.
+        /// </summary>
+        protected string Path { get; set; }
+        
         /// <summary>
         /// Get the index length for the given repository type.
         /// </summary>
@@ -75,20 +70,6 @@ namespace DicewareGenerator.Repositories
         }
 
         /// <summary>
-        /// Returns the path for given Diceware filetype.
-        /// </summary>
-        /// <param name="type">The type of file.</param>
-        /// <returns>Returns the path of the file for this repository.</returns>
-        protected string GetFileTypePath(DicewareFileType type)
-        {
-            string filename = filenames[(int)type];
-            
-            string basepath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
-            
-            return new Uri(Path.Combine(basepath, filename)).LocalPath;
-        }
-        
-        /// <summary>
         /// Load the repository's file source.
         /// </summary>
         /// <param name="type">The type of Diceware file to load.</param>
@@ -99,9 +80,7 @@ namespace DicewareGenerator.Repositories
                 return;
             }
             
-            string path = this.GetFileTypePath(type);
-            
-            foreach (string line in File.ReadLines(path))
+            foreach (string line in File.ReadLines(this.Path))
             {
                 string[] parts = line.Split('\t');
                 this.data.Add(parts[0], parts[1]);

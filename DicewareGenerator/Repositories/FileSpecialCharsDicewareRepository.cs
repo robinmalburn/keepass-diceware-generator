@@ -21,9 +21,11 @@ namespace DicewareGenerator.Repositories
         /// <summary>
         /// Initializes a new instance of the <see cref="FileSpecialCharsDicewareRepository"/> class.
         /// </summary>
+        /// <param name="path">The path to the file.</param>
         /// <param name="cryptoRandom">The cryptographic random utility.</param>
-        public FileSpecialCharsDicewareRepository(RandomUtil cryptoRandom)
+        public FileSpecialCharsDicewareRepository(string path, RandomUtil cryptoRandom)
         {
+            this.Path = path;
             this.Random = cryptoRandom;
             this.PopulateData(DicewareFileType.Special);
         }

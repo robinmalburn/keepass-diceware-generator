@@ -67,9 +67,10 @@ namespace DicewareGenerator
         /// <returns>The generated password.</returns>
         public override ProtectedString Generate(PwProfile prf, CryptoRandomStream crsRandomSource)
         {
-            Config config = Config.Deserialize(prf.CustomAlgorithmOptions);
+            UserConfig config = UserConfig.Deserialize(prf.CustomAlgorithmOptions);
+            SystemConfig sysConfig = new SystemConfig();
             RandomUtil random = new RandomUtil(crsRandomSource);
-            IDicewareRepositoryFactory factory = new DicewareRepositoryFactory(config);
+            IDicewareRepositoryFactory factory = new DicewareRepositoryFactory(config, sysConfig);
             IDicewareRepository repo = factory.Make(random);
             IDicewareSpecialCharsRepository specialCharsRepo = factory.MakeSpecialChars(random);
             
@@ -85,11 +86,11 @@ namespace DicewareGenerator
         /// <returns>A string of configured options.</returns>
         public override string GetOptions(string strCurrentOptions)
         {
-            Config config = Config.Deserialize(strCurrentOptions);
+            UserConfig config = UserConfig.Deserialize(strCurrentOptions);
             Options options = new Options(config);
             options.ShowDialog();
             
-            return Config.Serialize(config);
+            return UserConfig.Serialize(config);
         }
     }
 }

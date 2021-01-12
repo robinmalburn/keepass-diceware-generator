@@ -33,13 +33,13 @@ namespace DicewareGenerator.Repositories
         /// <summary>
         /// The configuration to be used.
         /// </summary>
-        private readonly Config config;
+        private readonly UserConfig config;
         
         /// <summary>
         /// Initializes a new instance of the <see cref="PresentationDicewareRepository"/> class.
         /// </summary>
         /// <param name="config">The configuration</param>
-        public PresentationDicewareRepository(Config config) 
+        public PresentationDicewareRepository(UserConfig config) 
         {
             this.config = config;
         }

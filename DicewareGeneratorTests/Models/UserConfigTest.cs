@@ -7,7 +7,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-
 namespace DicewareGeneratorTests.Models
 {
     using System;
@@ -16,10 +15,10 @@ namespace DicewareGeneratorTests.Models
     using NUnit.Framework;
     
     /// <summary>
-    /// Tests for the <see cref="Config"/> class.
+    /// Tests for the <see cref="UserConfig"/> class.
     /// </summary>
     [TestFixture]
-    public class ConfigTest
+    public class UserConfigTest
     {
         /// <summary>
         /// The default serialized representation of the config.
@@ -32,7 +31,7 @@ namespace DicewareGeneratorTests.Models
         [Test]
         public void TestDefaultConstructorValues()
         {
-            var config = new Config();
+            var config = new UserConfig();
             
             Assert.AreEqual(6, config.NumberOfWords, "Assert that the default NumberOfWords matches expectations.");
             Assert.AreEqual(false, config.StudlyCaps, "Assert that StudlyCaps are disabled by default.");
@@ -47,8 +46,8 @@ namespace DicewareGeneratorTests.Models
         [Test]
         public void TestSerializeDefaultConfig()
         {
-            var config = new Config();
-            Assert.AreEqual(DefaultSerializedConfig, Config.Serialize(config), "Assert that serializing the given config produces the expected XML.");
+            var config = new UserConfig();
+            Assert.AreEqual(DefaultSerializedConfig, UserConfig.Serialize(config), "Assert that serializing the given config produces the expected XML.");
         }
         
         /// <summary>
@@ -57,14 +56,14 @@ namespace DicewareGeneratorTests.Models
         [Test]
         public void TestSerialize()
         {
-            var config = new Config();
+            var config = new UserConfig();
             config.NumberOfWords = 3;
             config.StudlyCaps = true;
             config.Wordlist = DicewareFileType.Long;
             config.Separator = string.Empty;
             
             const string Expected = "<?xml version=\"1.0\" encoding=\"utf-8\"?><Config xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"><NumberOfWords>3</NumberOfWords><StudlyCaps>true</StudlyCaps><Wordlist>Long</Wordlist><Separator /><SpecialChars>false</SpecialChars></Config>";
-            Assert.AreEqual(Expected, Config.Serialize(config), "Assert that serializing the given config produces the expected XML.");
+            Assert.AreEqual(Expected, UserConfig.Serialize(config), "Assert that serializing the given config produces the expected XML.");
         }
         
         /// <summary>
@@ -73,9 +72,9 @@ namespace DicewareGeneratorTests.Models
         [Test]
         public void TestDeserializeInvalidSource()
         {
-            var config = Config.Deserialize(string.Empty);
+            var config = UserConfig.Deserialize(string.Empty);
             
-            Assert.IsInstanceOf(typeof(Config), config, "Assert that providing an invalid string results in a valid, default configuration.");
+            Assert.IsInstanceOf(typeof(UserConfig), config, "Assert that providing an invalid string results in a valid, default configuration.");
         }
         
         /// <summary>
@@ -84,7 +83,7 @@ namespace DicewareGeneratorTests.Models
         [Test]
         public void TestDefaultDeserializedValues()
         {
-            var config = Config.Deserialize(string.Empty);
+            var config = UserConfig.Deserialize(string.Empty);
             
             Assert.AreEqual(6, config.NumberOfWords, "Assert that the default NumberOfWords matches expectations.");
             Assert.AreEqual(false, config.StudlyCaps, "Assert that StudlyCaps are disabled by default.");
@@ -100,9 +99,9 @@ namespace DicewareGeneratorTests.Models
         public void TestDeserialize()
         {
             const string RawXml = "<?xml version=\"1.0\" encoding=\"utf-8\"?><Config xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"><NumberOfWords>3</NumberOfWords><StudlyCaps>true</StudlyCaps><Wordlist>Long</Wordlist><Separator /><SpecialChars>false</SpecialChars></Config>";
-            var config = Config.Deserialize(RawXml);
+            var config = UserConfig.Deserialize(RawXml);
             
-            Assert.IsInstanceOf(typeof(Config), config, "Assert that a valid config is returned.");
+            Assert.IsInstanceOf(typeof(UserConfig), config, "Assert that a valid config is returned.");
             Assert.AreEqual(3, config.NumberOfWords, "Assert that the NumberOfWords matches expectations.");
             Assert.AreEqual(true, config.StudlyCaps, "Assert that StudlyCaps setting is restored as expected.");
             Assert.AreEqual(DicewareFileType.Long, config.Wordlist, "Assert that the filetype is restored as expected.");

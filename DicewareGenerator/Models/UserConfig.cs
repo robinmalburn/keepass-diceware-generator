@@ -17,14 +17,15 @@ namespace DicewareGenerator.Models
     using DicewareGenerator.Repositories;
     
     /// <summary>
-    /// Config Model.
+    /// User Config Model.
     /// </summary>
-    public class Config
+    [XmlRoot("Config")]
+    public class UserConfig
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Config"/> class.
+        /// Initializes a new instance of the <see cref="UserConfig"/> class.
         /// </summary>
-        public Config()
+        public UserConfig()
         {
             this.NumberOfWords = 6;
             this.StudlyCaps = false;
@@ -71,11 +72,11 @@ namespace DicewareGenerator.Models
         public bool SpecialChars { get; set; }
                 
         /// <summary>
-        /// Serialize the given <see cref="Config"/>
+        /// Serialize the given <see cref="UserConfig"/>
         /// </summary>
         /// <param name="config">The Config instance.</param>
         /// <returns>A string of serialized XML.</returns>
-        public static string Serialize(Config config)
+        public static string Serialize(UserConfig config)
         {   
             var serializer = new XmlSerializer(config.GetType());
             
@@ -97,13 +98,13 @@ namespace DicewareGenerator.Models
         }
         
         /// <summary>
-        /// Deserialize an XML string into a <see cref="Config"/> model
+        /// Deserialize an XML string into a <see cref="UserConfig"/> model
         /// </summary>
         /// <param name="raw">An XML string.</param>
-        /// <returns><see cref="Config"/> Model</returns>
-        public static Config Deserialize(string raw)
+        /// <returns><see cref="UserConfig"/> Model</returns>
+        public static UserConfig Deserialize(string raw)
         {
-            var config = new Config();
+            var config = new UserConfig();
             
             if (string.IsNullOrEmpty(raw))
             {
@@ -116,7 +117,7 @@ namespace DicewareGenerator.Models
             {
                 try 
                 {
-                    return (Config)serializer.Deserialize(reader);
+                    return (UserConfig)serializer.Deserialize(reader);
                 } 
                 catch (InvalidOperationException)
                 {

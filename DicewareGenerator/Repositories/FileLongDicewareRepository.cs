@@ -21,9 +21,11 @@ namespace DicewareGenerator.Repositories
         /// <summary>
         /// Initializes a new instance of the <see cref="FileLongDicewareRepository"/> class.
         /// </summary>
+        /// <param name="path">The path to the file.</param>
         /// <param name="random">The cryptographic random utility.</param>
-        public FileLongDicewareRepository(RandomUtil random)
+        public FileLongDicewareRepository(string path, RandomUtil random)
         {
+           this.Path = path;
            this.Random = random;
            this.PopulateData(DicewareFileType.Long);
         }
