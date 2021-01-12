@@ -33,7 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="KeePass">
-      <HintPath>Resources\KeePass.exe</HintPath>
+      <HintPath>..\Resources\KeePass.exe</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
@@ -79,7 +79,6 @@
     <Folder Include="Crypto" />
     <Folder Include="UI" />
     <Folder Include="Repositories" />
-    <Folder Include="Resources" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\LICENSE">
@@ -88,11 +87,6 @@
     <None Include="..\README.md">
       <Link>README.md</Link>
     </None>
-    <None Include="Resources\eff_large_wordlist.txt" />
-    <None Include="Resources\eff_short_wordlist.txt" />
-    <None Include="Resources\KeePass.exe" />
-    <None Include="Resources\special_chars.txt" />
-    <None Include="Resources\Version.txt" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="UI\Options.resx">
