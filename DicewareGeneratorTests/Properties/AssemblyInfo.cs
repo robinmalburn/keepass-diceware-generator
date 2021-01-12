@@ -14,8 +14,8 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 #endregion
 
-[assembly: AssemblyTitle ("Diceware Generator Tests")]
-[assembly: AssemblyDescription ("Diceware Generator test suite")]
-[assembly: AssemblyCopyright ("Copyright 2021")]
-[assembly: AssemblyTrademark ("Robin Malburn")]
-[assembly: Guid ("b8ce5ca4-587b-4352-a97e-b92a5b126b4a")]
+[assembly: AssemblyTitle("Diceware Generator Tests")]
+[assembly: AssemblyDescription("Diceware Generator test suite")]
+[assembly: AssemblyCopyright("Copyright 2021")]
+[assembly: AssemblyTrademark("Robin Malburn")]
+[assembly: Guid("b8ce5ca4-587b-4352-a97e-b92a5b126b4a")]
