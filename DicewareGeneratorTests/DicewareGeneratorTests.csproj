@@ -76,9 +76,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models" />
+    <Folder Include="Crypto" />
     <Folder Include="Properties" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Crypto\RandomUtilTest.cs" />
     <Compile Include="Models\ConfigTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

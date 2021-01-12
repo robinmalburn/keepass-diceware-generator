@@ -37,21 +37,16 @@ namespace DicewareGenerator.Crypto
         /// <param name="max">Maximum value</param>
         /// <param name="min">Minimum value</param>
         /// <returns>The random number.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">If the minimum value is less than zero or greater than the maximum value.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">If the minimum value is greater than or equal the maximum value.</exception>
         /// <exception cref="ArgumentOutOfRangeException">If the maximum value is less than or equal to zero.</exception>
         public ulong RandomRange(ulong max, ulong min = 0)
         {
-            if (min < 0)
-            {
-                throw new ArgumentOutOfRangeException("min", "Minimum value must be greater than or equal to zero.");
-            }
-            
-            if (min > max)
+            if (min >= max)
             {
                 throw new ArgumentOutOfRangeException("min", "Minimum value must be less than maximum value.");
             }
             
-            if (max <= 0) 
+            if (max == 0) 
             {
                 throw new ArgumentOutOfRangeException("max", "Maximum value must be greater than zero.");
             }
