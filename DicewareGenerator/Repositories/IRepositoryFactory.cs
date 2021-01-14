@@ -14,38 +14,22 @@ namespace DicewareGenerator.Repositories
     using DicewareGenerator.Crypto;
 
     /// <summary>
-    /// Long file based diceware repository implementation.
+    /// Repository Factory Interface.
     /// </summary>
-    public class FileLongDicewareRepository : AbstractFileDicewareRepository
+    public interface IRepositoryFactory
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="FileLongDicewareRepository"/> class.
+        /// Make an instance of the Phrase Repository.
         /// </summary>
-        /// <param name="path">The path to the file.</param>
-        /// <param name="random">The cryptographic random utility.</param>
-        public FileLongDicewareRepository(string path, RandomUtil random)
-        {
-           this.Path = path;
-           this.Random = random;
-           this.PopulateData(DicewareFileType.Long);
-        }
+        /// <param name="random">Cryptographic Random Utility instance.</param>
+        /// <returns>Returns an instance of the phrase repository.</returns>
+        IPhraseRepository Make(RandomUtil random);
         
         /// <summary>
-        /// Get the index length for the given repository type.
+        /// Make an instance of the Special Chars Repository.
         /// </summary>
-        /// <returns>The require length of the repository's index.</returns>
-        public override DicewareIndexLength GetIndexLength()
-        {
-            return DicewareIndexLength.Long;
-        }
-        
-        /// <summary>
-        /// Gets the file type the repository relates to.
-        /// </summary>
-        /// <returns>The repository's related <see cref="DicewareFileType"/></returns>
-        public override DicewareFileType GetFileType() 
-        {
-            return DicewareFileType.Long;
-        }
+        /// <param name="random">Cryptographic Random Utility instance.</param>
+        /// <returns>Returns an instance of the special chars repository.</returns>
+        ISpecialCharsRepository MakeSpecialChars(RandomUtil random);
     }
 }

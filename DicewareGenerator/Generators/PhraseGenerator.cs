@@ -27,22 +27,22 @@ namespace DicewareGenerator.Generators
         protected readonly UserConfig Config;
         
         /// <summary>
-        /// Diceware Repository Instance.
+        /// Phrase Repository Instance.
         /// </summary>
-        protected readonly IDicewareRepository Repo;
+        protected readonly IPhraseRepository Repo;
         
         /// <summary>
-        /// Diceware Special Chars Repository Instance.
+        /// Special Chars Repository Instance.
         /// </summary>
-        protected readonly IDicewareSpecialCharsRepository SpecialCharsRepo;
+        protected readonly ISpecialCharsRepository SpecialCharsRepo;
         
         /// <summary>
-        /// Initializes a new instance of <see cref="PhraseGenerator"/> class.
+        /// Initializes a new instance of the <see cref="PhraseGenerator"/> class.
         /// </summary>
         /// <param name="config">A config instance.</param>
-        /// <param name="repository">A Diceware repository instance.</param>
-        /// <param name="specialCharsRepo">A Diceware Special Chars repository instance.</param>
-        public PhraseGenerator(UserConfig config, IDicewareRepository repository, IDicewareSpecialCharsRepository specialCharsRepo)
+        /// <param name="repository">A phrase repository instance.</param>
+        /// <param name="specialCharsRepo">A special chars repository instance.</param>
+        public PhraseGenerator(UserConfig config, IPhraseRepository repository, ISpecialCharsRepository specialCharsRepo)
         {
             this.Config = config;
             this.Repo = repository;

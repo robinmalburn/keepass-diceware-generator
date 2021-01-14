@@ -17,7 +17,7 @@ namespace DicewareGeneratorTests.Repositories
     /// <summary>
     /// Stub implementation of the <see cref="IDicewareRepository"/> interface.
     /// </summary>
-    public class StubDicewareRepository : IDicewareRepository
+    public class StubDicewareRepository : IPhraseRepository
     {
         /// <summary>
         /// The word to use when generating a word list.

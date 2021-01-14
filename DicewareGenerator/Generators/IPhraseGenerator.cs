@@ -13,7 +13,7 @@ namespace DicewareGenerator.Generators
     using KeePassLib.Security;
 
     /// <summary>
-    /// Diceware Generator Interface.
+    /// Phrase Generator Interface.
     /// </summary>
     public interface IPhraseGenerator
     {

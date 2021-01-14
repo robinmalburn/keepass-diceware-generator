@@ -12,40 +12,48 @@ namespace DicewareGenerator.Repositories
 {
     using System;
     using DicewareGenerator.Crypto;
-
+    
     /// <summary>
-    /// Short file based diceware repository implementation.
+    /// Special character file based repository.
     /// </summary>
-    public class FileShortDicewareRepository : AbstractFileDicewareRepository
+    public class FileSpecialCharsRepository : AbstractFileRepository, ISpecialCharsRepository
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="FileShortDicewareRepository"/> class.
+        /// Initializes a new instance of the <see cref="FileSpecialCharsRepository"/> class.
         /// </summary>
         /// <param name="path">The path to the file.</param>
-        /// <param name="random">The cryptographic random utility.</param>
-        public FileShortDicewareRepository(string path, RandomUtil random)
+        /// <param name="indexLength">The repository's <see cref="DicewareIndexLength"/>.</param>
+        /// <param name="cryptoRandom">The cryptographic random utility.</param>
+        public FileSpecialCharsRepository(string path, DicewareIndexLength indexLength, RandomUtil cryptoRandom)
         {
-           this.Path = path;
-           this.Random = random;
-           this.PopulateData(DicewareFileType.Short);
+            this.Path = path;
+            this.IndexLength = indexLength;
+            this.Random = cryptoRandom;
+            this.PopulateData(DicewareFileType.Special);
         }
         
         /// <summary>
-        /// Get the index length for the given repository type.
+        /// Apply random transformations to the given input string.
         /// </summary>
-        /// <returns>The require length of the repository's index.</returns>
-        public override DicewareIndexLength GetIndexLength()
+        /// <param name="input">The string to transform</param>
+        /// <returns>The transformed string</returns>
+        public string Transform(string input)
         {
-            return DicewareIndexLength.Short;
+            int idx = (int)Random.RandomRange((ulong)input.Length);
+            
+            char[] result = input.ToCharArray();
+            result[idx] = this.GetRandom();
+            
+            return new string(result);
         }
         
         /// <summary>
-        /// Gets the file type the repository relates to.
+        /// Get a random char from the repository.
         /// </summary>
-        /// <returns>The repository's related <see cref="DicewareFileType"/></returns>
-        public override DicewareFileType GetFileType() 
+        /// <returns>A random character from the repository.</returns>
+        private char GetRandom()
         {
-            return DicewareFileType.Short;
+            return this.Data[this.GetIndexString()][0];
         }
     }
 }

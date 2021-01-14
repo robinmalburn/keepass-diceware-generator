@@ -7,31 +7,30 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-namespace DicewareGeneratorTests.Repositories
+
+namespace DicewareGenerator.Repositories
 {
     using System;
     using System.Collections.Generic;
-    using DicewareGenerator.Repositories;
-    
+    using DicewareGenerator.Crypto;
+
     /// <summary>
-    /// Stub implementation of the <see cref="IDicewareSpecialCharsRepository"/> interface.
+    /// File based phrase repository.
     /// </summary>
-    public class StubSpecialCharsRepository : ISpecialCharsRepository
+    public class FilePhraseRepository : AbstractFileRepository, IPhraseRepository
     {
         /// <summary>
-        /// Initializes a new instance of <see cref="StubSpecialCharsRepository"/> class.
+        /// Initializes a new instance of the <see cref="FilePhraseRepository"/> class.
         /// </summary>
-        public StubSpecialCharsRepository()
+        /// <param name="path">The path to the file.</param>
+        /// <param name="indexLength">The repository's <see cref="DicewareIndexLength"/>.</param>
+        /// <param name="random">The cryptographic random utility.</param>
+        public FilePhraseRepository(string path, DicewareIndexLength indexLength, RandomUtil random)
         {
-        }
-        
-        /// <summary>
-        /// Get the filetype of the repository.
-        /// </summary>
-        /// <returns>Returns the filetype of the repository.</returns>
-        public DicewareFileType GetFileType()
-        {
-            return DicewareFileType.Special;
+           this.Path = path;
+           this.IndexLength = indexLength;
+           this.Random = random;
+           this.PopulateData(DicewareFileType.Long);
         }
         
         /// <summary>
@@ -42,29 +41,19 @@ namespace DicewareGeneratorTests.Repositories
         /// <exception cref="ArgumentOutOfRangeException">Thrown if count is less than or equal to zero.</exception>
         public List<string> GetRandom(int count)
         {
-            if (count <= 0) 
+            if (count <= 0)
             {
-                throw new ArgumentOutOfRangeException("count", "Count must be greater than zero");
+                throw new ArgumentOutOfRangeException("count");
             }
             
             var result = new List<string>();
             
-            result.Add("!");
+            for (int i = 0; i < count; i++)
+            {
+                result.Add(this.Data[this.GetIndexString()]);
+            }
             
             return result;
-        }
-        
-        /// <summary>
-        /// Apply random transformations to the given input string.
-        /// </summary>
-        /// <param name="input">The string to transform</param>
-        /// <returns>The transformed string</returns>
-        public string Transform(string input)
-        {
-            var chars = input.ToCharArray();
-            chars[0] = '!';
-            
-            return new string(chars);
         }
     }
 }

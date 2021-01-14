@@ -30,12 +30,12 @@ namespace DicewareGeneratorTests.Generators
         /// <summary>
         /// Stub special character repository.
         /// </summary>
-        private IDicewareSpecialCharsRepository specialCharsRepo;
+        private ISpecialCharsRepository specialCharsRepo;
 
         /// <summary>
         /// Stub phrase repository.
         /// </summary>
-        private IDicewareRepository repo;
+        private IPhraseRepository repo;
         
         /// <summary>
         /// Sets up the test case.
@@ -52,7 +52,7 @@ namespace DicewareGeneratorTests.Generators
         /// Tests generating a pass phrase.
         /// </summary>
         [Test]
-        public void testGenerate()
+        public void TestGenerate()
         {
             var generator = new PhraseGenerator(this.config, this.repo, this.specialCharsRepo);
             

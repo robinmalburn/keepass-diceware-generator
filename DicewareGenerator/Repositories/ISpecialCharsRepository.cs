@@ -11,25 +11,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 namespace DicewareGenerator.Repositories
 {
     using System;
-    using System.Collections.Generic;
-
+    
     /// <summary>
-    /// Interface for retrieving values from a diceware based word/character list.
+    /// Special character repository.
     /// </summary>
-    public interface IDicewareRepository
-    {   
+    public interface ISpecialCharsRepository
+    {
         /// <summary>
-        /// Get the filetype of the repository.
+        /// Apply random transformations to the given input string.
         /// </summary>
-        /// <returns>Returns the filetype of the repository.</returns>
-        DicewareFileType GetFileType();
-        
-        /// <summary>
-        /// Get <paramref name="count"/> random entries from the repository.
-        /// </summary>
-        /// <param name="count">The number of random references to return.</param>
-        /// <returns>A list of random entries.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown if count is less than or equal to zero.</exception>
-        List<string> GetRandom(int count);
+        /// <param name="input">The string to transform</param>
+        /// <returns>The transformed string</returns>
+        string Transform(string input);
     }
 }

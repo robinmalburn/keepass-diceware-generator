@@ -11,9 +11,9 @@ namespace DicewareGeneratorTests.Models
 {
     using System;
     using System.IO;
-    using NUnit.Framework;
     using DicewareGenerator.Models;
     using DicewareGenerator.Repositories;
+    using NUnit.Framework;
 
     [TestFixture]
     public class SystemConfigTest

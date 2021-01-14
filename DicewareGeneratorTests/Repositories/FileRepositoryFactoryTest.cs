@@ -16,8 +16,11 @@ namespace DicewareGeneratorTests.Repositories
     using KeePassLib.Cryptography;
     using NUnit.Framework;
 
+    /// <summary>
+    /// File repository factory test.
+    /// </summary>
     [TestFixture]
-    public class DicewareRepositoryFactoryTest
+    public class FileRepositoryFactoryTest
     {
         /// <summary>
         /// Instance of <see cref="RandomUtil"/>
@@ -25,15 +28,18 @@ namespace DicewareGeneratorTests.Repositories
         private RandomUtil util;
         
         /// <summary>
-        /// Instance of <see cref="IDicewareRepositoryFactory"/> to test.
+        /// Instance of <see cref="IRepositoryFactory"/> to test.
         /// </summary>
-        private IDicewareRepositoryFactory factory;
+        private IRepositoryFactory factory;
         
         /// <summary>
         /// Instance of <see cref="UserConfig"/> to pass to factory.
         /// </summary>
         private UserConfig userConfig;
         
+        /// <summary>
+        /// Set up the test case.
+        /// </summary>
         [SetUp]
         public void SetUp()
         {
@@ -48,7 +54,7 @@ namespace DicewareGeneratorTests.Repositories
             sysConfig.Basepath = "../../../Resources";
             
             this.userConfig = new UserConfig();
-            this.factory = new DicewareRepositoryFactory(userConfig, sysConfig);
+            this.factory = new FileRepositoryFactory(this.userConfig, sysConfig);
         }
         
         /// <summary>
@@ -57,18 +63,22 @@ namespace DicewareGeneratorTests.Repositories
         [Test]
         public void TestMakeSpecialChars()
         {
-            Assert.IsInstanceOf(typeof(IDicewareSpecialCharsRepository), this.factory.MakeSpecialChars(this.util), "Assert that an instance of the special chars repo can be made.");
+            Assert.IsInstanceOf(typeof(ISpecialCharsRepository), this.factory.MakeSpecialChars(this.util), "Assert that an instance of the special chars repo can be made.");
         }
         
+        /// <summary>
+        /// Test making a phrase repository.
+        /// </summary>
+        /// <param name="filetype">The <see cref="DicewareFileType"/> to be set as the config wordlist.</param>
         [Test]
-        [TestCase(DicewareFileType.Short, typeof(FileShortDicewareRepository))]
-        [TestCase(DicewareFileType.Long, typeof(FileLongDicewareRepository))]
-        public void TestMake(DicewareFileType filetype, Type repoType)
+        [TestCase(DicewareFileType.Short)]
+        [TestCase(DicewareFileType.Long)]
+        public void TestMake(DicewareFileType filetype)
         {
             this.userConfig.Wordlist = filetype;
             var result = this.factory.Make(this.util);
             
-            Assert.IsInstanceOf(repoType, result, "Assert the returned repository type matches expectations.");
+            Assert.IsInstanceOf(typeof(IPhraseRepository), result, "Assert the returned repository type matches expectations.");
         }
     }
 }

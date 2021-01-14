@@ -15,9 +15,9 @@ namespace DicewareGenerator.Repositories
     using System.Collections.ObjectModel;
     
     /// <summary>
-    /// Description of PresentationSpecialCharsRepository.
+    /// Presentation Special Chars Repository.
     /// </summary>
-    public class PresentationSpecialCharsRepository : IDicewareSpecialCharsRepository
+    public class PresentationSpecialCharsRepository : ISpecialCharsRepository
     {
         /// <summary>
         /// The special characters to use.
@@ -37,38 +37,6 @@ namespace DicewareGenerator.Repositories
         }
         
         /// <summary>
-        /// Gets the file type the repository relates to.
-        /// </summary>
-        /// <returns>The repository's related <see cref="DicewareFileType"/></returns>
-        public DicewareFileType GetFileType()
-        {
-            return DicewareFileType.Special;
-        }
-        
-        /// <summary>
-        /// Get <paramref name="count"/> random entries from the repository.
-        /// </summary>
-        /// <param name="count">The number of random references to return.</param>
-        /// <returns>A list of random entries.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown if count is less than or equal to zero.</exception>
-        public List<string> GetRandom(int count)
-        {
-            if (count <= 0) 
-            {
-                throw new ArgumentOutOfRangeException("count", "Count must be greater than zero");
-            }
-            
-            var result = new List<string>();
-            
-            for (int i = 0; i < count; i++) 
-            {
-                result.Add(SpecialChars[Random.Next(SpecialChars.Count)].ToString());
-            }
-            
-            return result;
-        }
-        
-        /// <summary>
         /// Apply random transformations to the given input string.
         /// </summary>
         /// <param name="input">The string to transform</param>
@@ -78,9 +46,18 @@ namespace DicewareGenerator.Repositories
             int idx = Random.Next(input.Length);
             
             char[] result = input.ToCharArray();
-            result[idx] = this.GetRandom(1)[0].ToCharArray()[0];
+            result[idx] = this.GetRandom();
             
             return new string(result);
+        }
+        
+        /// <summary>
+        /// Get a random char from the repository.
+        /// </summary>
+        /// <returns>A random character from the repository.</returns>
+        private char GetRandom()
+        {
+            return SpecialChars[Random.Next(SpecialChars.Count)];
         }
     }
 }

@@ -15,14 +15,14 @@ namespace DicewareGenerator.Repositories
     using DicewareGenerator.Crypto;
     
     /// <summary>
-    /// Abstract file based Diceware Repository.
+    /// Abstract file based repository.
     /// </summary>
-    abstract public class AbstractFileDicewareRepository : IDicewareRepository
+    abstract public class AbstractFileRepository
     {        
         /// <summary>
         /// Dictionary of words indexed by their dice-like index.
         /// </summary>
-        private Dictionary<string, string> data = new Dictionary<string, string>();
+        protected Dictionary<string, string> Data = new Dictionary<string, string>();
        
         /// <summary>
         /// Gets or sets the cryptographic random utility.
@@ -35,39 +35,9 @@ namespace DicewareGenerator.Repositories
         protected string Path { get; set; }
         
         /// <summary>
-        /// Get the index length for the given repository type.
+        /// The index length for the repository.
         /// </summary>
-        /// <returns>The require length of the repository's index.</returns>
-       public abstract DicewareIndexLength GetIndexLength();
-        
-        /// <summary>
-        /// Gets the file type the repository relates to.
-        /// </summary>
-        /// <returns>The repository's related <see cref="DicewareFileType"/></returns>
-        public abstract DicewareFileType GetFileType();
-        
-        /// <summary>
-        /// Get <paramref name="count"/> random entries from the repository.
-        /// </summary>
-        /// <param name="count">The number of random references to return.</param>
-        /// <returns>A list of random entries.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown if count is less than or equal to zero.</exception>
-        public List<string> GetRandom(int count)
-        {
-            if (count <= 0)
-            {
-                throw new ArgumentOutOfRangeException("count");
-            }
-            
-            var result = new List<string>();
-            
-            for (int i = 0; i < count; i++)
-            {
-                result.Add(this.data[this.GetIndexString()]);
-            }
-            
-            return result;
-        }
+        protected DicewareIndexLength IndexLength { get; set; }
 
         /// <summary>
         /// Load the repository's file source.
@@ -75,7 +45,7 @@ namespace DicewareGenerator.Repositories
         /// <param name="type">The type of Diceware file to load.</param>
         protected void PopulateData(DicewareFileType type)
         {
-            if (this.data.Count > 0) 
+            if (this.Data.Count > 0) 
             {
                 return;
             }
@@ -83,7 +53,7 @@ namespace DicewareGenerator.Repositories
             foreach (string line in File.ReadLines(this.Path))
             {
                 string[] parts = line.Split('\t');
-                this.data.Add(parts[0], parts[1]);
+                this.Data.Add(parts[0], parts[1]);
             }
         }
         
@@ -93,7 +63,7 @@ namespace DicewareGenerator.Repositories
         /// <returns>A Diceware string index</returns>
         protected string GetIndexString()
         {
-            int len = (int)this.GetIndexLength();
+            int len = (int)this.IndexLength;
             var indices = new ulong[len];
             
             for (int i = 0; i < len; i++)

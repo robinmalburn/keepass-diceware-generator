@@ -55,7 +55,7 @@ namespace DicewareGenerator.UI
             this.presentationConfig = new UserConfig();
             this.generator = new PhraseGenerator(
                 this.presentationConfig, 
-                new PresentationDicewareRepository(this.presentationConfig), 
+                new PresentationPhraseRepository(this.presentationConfig), 
                 new PresentationSpecialCharsRepository());
             
             DicewareFileType[] wordLists = { DicewareFileType.Short, DicewareFileType.Long };

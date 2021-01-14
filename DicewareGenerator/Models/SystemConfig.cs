@@ -22,7 +22,8 @@ namespace DicewareGenerator.Models
         /// <summary>
         /// Filenames of local Diceware files.
         /// </summary>
-        private static readonly ReadOnlyCollection<string> Filenames = Array.AsReadOnly(new string[] { 
+        private static readonly ReadOnlyCollection<string> Filenames = Array.AsReadOnly(new string[] 
+        {
             "eff_short_wordlist.txt",
             "eff_large_wordlist.txt",
             "special_chars.txt",

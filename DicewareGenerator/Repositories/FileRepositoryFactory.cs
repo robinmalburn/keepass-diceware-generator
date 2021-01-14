@@ -7,29 +7,59 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-
 namespace DicewareGenerator.Repositories
-{
+{   
     using System;
     using DicewareGenerator.Crypto;
+    using DicewareGenerator.Models;
 
     /// <summary>
-    /// IDicewareRepositoryFactory Interface.
+    /// Factory for creating Diceware Repositories.
     /// </summary>
-    public interface IDicewareRepositoryFactory
-    {
+    public class FileRepositoryFactory : IRepositoryFactory
+    {      
+        /// <summary>
+        /// The factory's user configuration.
+        /// </summary>
+        private readonly UserConfig userConfig;
+        
+        /// <summary>
+        /// The system configuration.
+        /// </summary>
+        private readonly SystemConfig sysConfig;
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FileRepositoryFactory"/> class.
+        /// </summary>
+        /// <param name="config">The <see cref="UserConfig"/> for the factory.</param>
+        /// <param name="sysConfig">The <see cref="SystemConfig"/>.</param>
+        public FileRepositoryFactory(UserConfig config, SystemConfig sysConfig)
+        {
+            this.userConfig = config;
+            this.sysConfig = sysConfig;
+        }
+        
         /// <summary>
         /// Make an instance of the Diceware Repository.
         /// </summary>
         /// <param name="random">Cryptographic Random Utility instance.</param>
         /// <returns>Returns an instance of the Diceware Repository.</returns>
-        IDicewareRepository Make(RandomUtil random);
+        public IPhraseRepository Make(RandomUtil random)
+        {
+            string path = this.sysConfig.GetPathForFileType(this.userConfig.Wordlist);
+            DicewareIndexLength len = this.userConfig.Wordlist == DicewareFileType.Short ? DicewareIndexLength.Short : DicewareIndexLength.Long;
+            
+            return new FilePhraseRepository(path, len, random);
+        }
         
         /// <summary>
         /// Make an instance of the Special Chars Diceware Repository.
         /// </summary>
         /// <param name="random">Cryptographic Random Utility instance.</param>
         /// <returns>Returns an instance of the Diceware Special Chars Repository.</returns>
-        IDicewareSpecialCharsRepository MakeSpecialChars(RandomUtil random);
+        public ISpecialCharsRepository MakeSpecialChars(RandomUtil random)
+        {
+            return new FileSpecialCharsRepository(this.sysConfig.GetPathForFileType(DicewareFileType.Special), DicewareIndexLength.Special, random);
+        }
     }
 }

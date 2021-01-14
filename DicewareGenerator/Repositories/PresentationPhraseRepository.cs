@@ -18,7 +18,7 @@ namespace DicewareGenerator.Repositories
     /// <summary>
     /// Simple presentation repository for returning dummy values.
     /// </summary>
-    public class PresentationDicewareRepository : IDicewareRepository
+    public class PresentationPhraseRepository : IPhraseRepository
     {
         /// <summary>
         /// Short words to be used by the repository.
@@ -36,21 +36,12 @@ namespace DicewareGenerator.Repositories
         private readonly UserConfig config;
         
         /// <summary>
-        /// Initializes a new instance of the <see cref="PresentationDicewareRepository"/> class.
+        /// Initializes a new instance of the <see cref="PresentationPhraseRepository"/> class.
         /// </summary>
         /// <param name="config">The configuration</param>
-        public PresentationDicewareRepository(UserConfig config) 
+        public PresentationPhraseRepository(UserConfig config) 
         {
             this.config = config;
-        }
-        
-        /// <summary>
-        /// Gets the file type the repository relates to.
-        /// </summary>
-        /// <returns>The repository's related <see cref="DicewareFileType"/></returns>
-        public DicewareFileType GetFileType()
-        {
-            return this.config.Wordlist;
         }
         
         /// <summary>
@@ -68,7 +59,7 @@ namespace DicewareGenerator.Repositories
                         
             var result = new List<string>();
             
-            var words = this.GetFileType() == DicewareFileType.Short ? ShortWords : LongWords;
+            var words = this.config.Wordlist == DicewareFileType.Short ? ShortWords : LongWords;
             
             for (int i = 0;  i < count; i++)
             {

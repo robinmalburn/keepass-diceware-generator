@@ -16,7 +16,7 @@ namespace DicewareGenerator
     /// <summary>
     /// Plugin entry point class.
     /// </summary>
-    public class DicewareGeneratorExt: Plugin
+    public class DicewareGeneratorExt : Plugin
     {
         /// <summary>
         /// Plugin host container.
@@ -53,7 +53,7 @@ namespace DicewareGenerator
             return true;
         }
         
-         /// <summary>
+        /// <summary>
         /// The <c>Terminate</c> method is called by KeePass when
         /// you should free all resources, close files/streams,
         /// remove event handlers, etc.

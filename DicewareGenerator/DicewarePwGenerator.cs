@@ -70,9 +70,9 @@ namespace DicewareGenerator
             UserConfig config = UserConfig.Deserialize(prf.CustomAlgorithmOptions);
             SystemConfig sysConfig = new SystemConfig();
             RandomUtil random = new RandomUtil(crsRandomSource);
-            IDicewareRepositoryFactory factory = new DicewareRepositoryFactory(config, sysConfig);
-            IDicewareRepository repo = factory.Make(random);
-            IDicewareSpecialCharsRepository specialCharsRepo = factory.MakeSpecialChars(random);
+            IRepositoryFactory factory = new FileRepositoryFactory(config, sysConfig);
+            IPhraseRepository repo = factory.Make(random);
+            ISpecialCharsRepository specialCharsRepo = factory.MakeSpecialChars(random);
             
             IPhraseGenerator generator = new PhraseGenerator(config, repo, specialCharsRepo);
 
