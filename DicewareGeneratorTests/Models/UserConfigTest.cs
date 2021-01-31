@@ -23,7 +23,7 @@ namespace DicewareGeneratorTests.Models
         /// <summary>
         /// The default serialized representation of the config.
         /// </summary>
-        private const string DefaultSerializedConfig = "<?xml version=\"1.0\" encoding=\"utf-8\"?><Config xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"><NumberOfWords>6</NumberOfWords><StudlyCaps>false</StudlyCaps><Wordlist>Short</Wordlist><Separator> </Separator><SpecialChars>false</SpecialChars></Config>";
+        private const string DefaultSerializedConfig = "<?xml version=\"1.0\" encoding=\"utf-8\"?><Config xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xml:space=\"preserve\"><NumberOfWords>6</NumberOfWords><StudlyCaps>false</StudlyCaps><Wordlist>Short</Wordlist><Separator> </Separator><SpecialChars>false</SpecialChars></Config>";
         
         /// <summary>
         /// Test the default values set upon constructing a new instance.
@@ -62,7 +62,7 @@ namespace DicewareGeneratorTests.Models
             config.Wordlist = DicewareFileType.Long;
             config.Separator = string.Empty;
             
-            const string Expected = "<?xml version=\"1.0\" encoding=\"utf-8\"?><Config xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"><NumberOfWords>3</NumberOfWords><StudlyCaps>true</StudlyCaps><Wordlist>Long</Wordlist><Separator /><SpecialChars>false</SpecialChars></Config>";
+            const string Expected = "<?xml version=\"1.0\" encoding=\"utf-8\"?><Config xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xml:space=\"preserve\"><NumberOfWords>3</NumberOfWords><StudlyCaps>true</StudlyCaps><Wordlist>Long</Wordlist><Separator /><SpecialChars>false</SpecialChars></Config>";
             Assert.AreEqual(Expected, UserConfig.Serialize(config), "Assert that serializing the given config produces the expected XML.");
         }
         
@@ -98,7 +98,7 @@ namespace DicewareGeneratorTests.Models
         [Test]
         public void TestDeserialize()
         {
-            const string RawXml = "<?xml version=\"1.0\" encoding=\"utf-8\"?><Config xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"><NumberOfWords>3</NumberOfWords><StudlyCaps>true</StudlyCaps><Wordlist>Long</Wordlist><Separator /><SpecialChars>false</SpecialChars></Config>";
+            const string RawXml = "<?xml version=\"1.0\" encoding=\"utf-8\"?><Config xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xml:space=\"preserve\"><NumberOfWords>3</NumberOfWords><StudlyCaps>true</StudlyCaps><Wordlist>Long</Wordlist><Separator /><SpecialChars>false</SpecialChars></Config>";
             var config = UserConfig.Deserialize(RawXml);
             
             Assert.IsInstanceOf(typeof(UserConfig), config, "Assert that a valid config is returned.");

@@ -38,13 +38,7 @@ namespace DicewareGenerator.Models
         /// Gets the <code>space</code> attribute setting for XML serialization.
         /// </summary>
         [XmlAttribute("space", Namespace = "http://www.w3.org/XML/1998/namespace")]  
-        public string Space
-        {
-            get
-            {
-                return "preserve";
-            }
-        }
+        public string Space = "preserve";
         
         /// <summary>
         /// Gets or sets the number of words to be generated.
