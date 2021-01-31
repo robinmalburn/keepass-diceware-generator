@@ -12,7 +12,6 @@ namespace DicewareGeneratorTests.Crypto
 {
     using System;
     using DicewareGenerator.Crypto;
-    using KeePassLib.Cryptography;
     using NUnit.Framework;
 
     /// <summary>
@@ -31,13 +30,8 @@ namespace DicewareGeneratorTests.Crypto
         /// </summary>
         [SetUp]
         public void SetUp()
-        {
-            var bytes = new byte[32];
-            var rnd = new Random();
-            rnd.NextBytes(bytes);
-            var stream = new CryptoRandomStream(CrsAlgorithm.ChaCha20, bytes);
-            
-            this.util = new RandomUtil(stream);
+        {            
+            this.util = RandomUtilFactory.Make();
         }
         
         /// <summary>

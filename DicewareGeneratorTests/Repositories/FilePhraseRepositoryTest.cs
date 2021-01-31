@@ -7,6 +7,7 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
+
 namespace DicewareGeneratorTests.Repositories
 {
     using System;
@@ -16,11 +17,8 @@ namespace DicewareGeneratorTests.Repositories
     using DicewareGeneratorTests.Crypto;
     using NUnit.Framework;
 
-    /// <summary>
-    /// File repository factory test.
-    /// </summary>
     [TestFixture]
-    public class FileRepositoryFactoryTest
+    public class FilePhraseRepositoryTest
     {
         /// <summary>
         /// Instance of <see cref="RandomUtil"/>
@@ -28,15 +26,10 @@ namespace DicewareGeneratorTests.Repositories
         private RandomUtil util;
         
         /// <summary>
-        /// Instance of <see cref="IRepositoryFactory"/> to test.
+        /// Instance of <see cref="SystemConfig"/>.
         /// </summary>
-        private IRepositoryFactory factory;
-        
-        /// <summary>
-        /// Instance of <see cref="UserConfig"/> to pass to factory.
-        /// </summary>
-        private UserConfig userConfig;
-        
+        private SystemConfig sysConfig;
+    
         /// <summary>
         /// Set up the test case.
         /// </summary>
@@ -44,36 +37,41 @@ namespace DicewareGeneratorTests.Repositories
         public void SetUp()
         {
             this.util = RandomUtilFactory.Make();
-            
-            var sysConfig = new SystemConfig();
-            sysConfig.Basepath = "../../../Resources";
-            
-            this.userConfig = new UserConfig();
-            this.factory = new FileRepositoryFactory(this.userConfig, sysConfig);
+            this.sysConfig = new SystemConfig();
+            this.sysConfig.Basepath = "../../../Resources";
         }
         
         /// <summary>
-        /// Test making a special chars repository.
+        /// Tests that an invalid range passed to Get Random results in the expected exception.
         /// </summary>
+        /// <param name="fileType">A <see cref="DicewareFileType"/></param>
+        /// <param name="index">A <see cref="DicewareIndexLength"/></param>
         [Test]
-        public void TestMakeSpecialChars()
+        [TestCase(DicewareFileType.Short, DicewareIndexLength.Short)]
+        [TestCase(DicewareFileType.Long, DicewareIndexLength.Long)]
+        public void TestInvalidRange(DicewareFileType fileType, DicewareIndexLength index)
         {
-            Assert.IsInstanceOf(typeof(ISpecialCharsRepository), this.factory.MakeSpecialChars(this.util), "Assert that an instance of the special chars repo can be made.");
+            var repo = new FilePhraseRepository(this.sysConfig.GetPathForFileType(fileType), index, this.util);
+            
+            Assert.Throws<ArgumentOutOfRangeException>(() => repo.GetRandom(0), "Assert that the count value must be greater than zero.");   
         }
         
         /// <summary>
-        /// Test making a phrase repository.
+        /// Test that the correct number of items is returned when getting a random selection.
         /// </summary>
-        /// <param name="filetype">The <see cref="DicewareFileType"/> to be set as the config wordlist.</param>
+        /// <param name="fileType">A <see cref="DicewareFileType"/></param>
+        /// <param name="index">A <see cref="DicewareIndexLength"/></param>
+        /// <param name="count">The number of items to retrieve.</param>
         [Test]
-        [TestCase(DicewareFileType.Short)]
-        [TestCase(DicewareFileType.Long)]
-        public void TestMake(DicewareFileType filetype)
+        [TestCase(DicewareFileType.Short, DicewareIndexLength.Short, 3)]
+        [TestCase(DicewareFileType.Long, DicewareIndexLength.Long, 2)]
+        public void TestGetRandom(DicewareFileType fileType, DicewareIndexLength index, int count)
         {
-            this.userConfig.Wordlist = filetype;
-            var result = this.factory.Make(this.util);
+            var repo = new FilePhraseRepository(this.sysConfig.GetPathForFileType(fileType), index, this.util);
             
-            Assert.IsInstanceOf(typeof(IPhraseRepository), result, "Assert the returned repository type matches expectations.");
+            var result = repo.GetRandom(count);
+            
+            Assert.AreEqual(count, result.Count, "Assert that the returned number of items matches expectations.");
         }
     }
 }
