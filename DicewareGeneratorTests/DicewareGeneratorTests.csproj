@@ -90,6 +90,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\FilePhraseRepositoryTest.cs" />
     <Compile Include="Repositories\FileRepositoryFactoryTest.cs" />
+    <Compile Include="Repositories\FileSpecialCharsRepositoryTest.cs" />
+    <Compile Include="Repositories\PresentationPhraseRepositoryTest.cs" />
+    <Compile Include="Repositories\PresentationSpecialCharsRepositoryTest.cs" />
     <Compile Include="Repositories\StubDicewareRepository.cs" />
     <Compile Include="Repositories\StubSpecialCharsRepository.cs" />
   </ItemGroup>

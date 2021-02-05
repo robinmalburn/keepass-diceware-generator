@@ -17,6 +17,10 @@ namespace DicewareGeneratorTests.Repositories
     using DicewareGeneratorTests.Crypto;
     using NUnit.Framework;
 
+   
+    /// <summary>
+    /// Tests the <see cref="FilePhraseRepository"/>.
+    /// </summary>
     [TestFixture]
     public class FilePhraseRepositoryTest
     {
@@ -72,6 +76,17 @@ namespace DicewareGeneratorTests.Repositories
             var result = repo.GetRandom(count);
             
             Assert.AreEqual(count, result.Count, "Assert that the returned number of items matches expectations.");
+        }
+        
+        /// <summary>
+        /// Tests that the repository implements the expected interface.
+        /// </summary>
+        [Test]
+        public void TestInterface()
+        {
+            var repo = new FilePhraseRepository(this.sysConfig.GetPathForFileType(DicewareFileType.Short), DicewareIndexLength.Short, this.util);
+            
+            Assert.IsInstanceOf(typeof(IPhraseRepository), repo, "Assert that the repository implements the expected interface.");
         }
     }
 }

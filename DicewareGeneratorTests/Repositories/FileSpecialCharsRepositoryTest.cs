@@ -7,6 +7,7 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
+
 namespace DicewareGeneratorTests.Repositories
 {
     using System;
@@ -17,10 +18,10 @@ namespace DicewareGeneratorTests.Repositories
     using NUnit.Framework;
 
     /// <summary>
-    /// File repository factory test.
+    /// Tests the <see cref="FileSpecialCharsRepository"/>.
     /// </summary>
     [TestFixture]
-    public class FileRepositoryFactoryTest
+    public class FileSpecialCharsRepositoryTest
     {
         /// <summary>
         /// Instance of <see cref="RandomUtil"/>
@@ -28,15 +29,10 @@ namespace DicewareGeneratorTests.Repositories
         private RandomUtil util;
         
         /// <summary>
-        /// Instance of <see cref="IRepositoryFactory"/> to test.
+        /// Instance of <see cref="SystemConfig"/>.
         /// </summary>
-        private IRepositoryFactory factory;
-        
-        /// <summary>
-        /// Instance of <see cref="UserConfig"/> to pass to factory.
-        /// </summary>
-        private UserConfig userConfig;
-        
+        private SystemConfig sysConfig;
+    
         /// <summary>
         /// Set up the test case.
         /// </summary>
@@ -44,45 +40,34 @@ namespace DicewareGeneratorTests.Repositories
         public void SetUp()
         {
             this.util = RandomUtilFactory.Make();
-            
-            var sysConfig = new SystemConfig();
-            sysConfig.Basepath = "../../../Resources";
-            
-            this.userConfig = new UserConfig();
-            this.factory = new FileRepositoryFactory(this.userConfig, sysConfig);
+            this.sysConfig = new SystemConfig();
+            this.sysConfig.Basepath = "../../../Resources";
         }
         
         /// <summary>
-        /// Test making a special chars repository.
-        /// </summary>
-        [Test]
-        public void TestMakeSpecialChars()
-        {
-            Assert.IsInstanceOf(typeof(ISpecialCharsRepository), this.factory.MakeSpecialChars(this.util), "Assert that an instance of the special chars repo can be made.");
-        }
-        
-        /// <summary>
-        /// Test making a phrase repository.
-        /// </summary>
-        /// <param name="filetype">The <see cref="DicewareFileType"/> to be set as the config wordlist.</param>
-        [Test]
-        [TestCase(DicewareFileType.Short)]
-        [TestCase(DicewareFileType.Long)]
-        public void TestMake(DicewareFileType filetype)
-        {
-            this.userConfig.Wordlist = filetype;
-            var result = this.factory.Make(this.util);
-            
-            Assert.IsInstanceOf(typeof(IPhraseRepository), result, "Assert the returned repository type matches expectations.");
-        }
-        
-        /// <summary>
-        /// Tests that the factory implements the expected interface.
+        /// Tests that the repository implements the expected interface.
         /// </summary>
         [Test]
         public void TestInterface()
         {
-            Assert.IsInstanceOf(typeof(IRepositoryFactory), this.factory, "Assert that the factory implements the expected interface.");
+            var repo = new FileSpecialCharsRepository(this.sysConfig.GetPathForFileType(DicewareFileType.Special), DicewareIndexLength.Special, this.util);
+            
+            Assert.IsInstanceOf(typeof(ISpecialCharsRepository), repo, "Assert that the repository implements the expected interface.");
+        }
+        
+        /// <summary>
+        /// Test that the a given input is transformed.
+        /// </summary>
+        [Test]
+        public void TestTransform()
+        {
+            const string Input = "Test";
+            
+            var repo = new FileSpecialCharsRepository(this.sysConfig.GetPathForFileType(DicewareFileType.Special), DicewareIndexLength.Special, this.util);
+            
+            var result = repo.Transform(Input);
+            
+            Assert.AreNotEqual(Input, result, "Assert that the result of transformation differs to the input.");
         }
     }
 }
