@@ -15,6 +15,9 @@ namespace DicewareGeneratorTests.Models
     using DicewareGenerator.Repositories;
     using NUnit.Framework;
 
+    /// <summary>
+    /// Tests the <see cref="SystemConfig"/>.
+    /// </summary>
     [TestFixture]
     public class SystemConfigTest
     {

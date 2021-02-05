@@ -16,13 +16,13 @@ namespace DicewareGeneratorTests.Crypto
     /// <summary>
     /// Factor to simplify creation of <see cref="RandomUtil">RandomUtil</see> class.
     /// </summary>
-    static public class RandomUtilFactory
+    public static class RandomUtilFactory
     {        
         /// <summary>
         /// Make an instance of the <see cref="RandomUtil">RandomUtil</see> class.
         /// </summary>
         /// <returns>A <see cref="RandomUtil">RandomUtil</see> instance.</returns>
-        static public RandomUtil Make()
+        public static RandomUtil Make()
         {
             var bytes = new byte[32];
             var rnd = new Random();
