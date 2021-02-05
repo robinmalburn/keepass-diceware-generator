@@ -58,5 +58,16 @@ namespace DicewareGeneratorTests.Generators
             
             Assert.AreEqual("foo foo foo foo foo foo", generator.Generate().ReadString(), "Assert that the generated password matches expectations.");
         }
+        
+        /// <summary>
+        /// Tests that the generator implements the expected interface.
+        /// </summary>
+        [Test]
+        public void TestInterface()
+        {
+            var generator = new PhraseGenerator(this.config, this.repo, this.specialCharsRepo);
+            
+            Assert.IsInstanceOf(typeof(IPhraseGenerator), generator, "Assert that the generator implements the expected interface.");
+        }
     }
 }
