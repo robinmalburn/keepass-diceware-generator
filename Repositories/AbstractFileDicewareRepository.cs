@@ -85,7 +85,27 @@ namespace DicewareGenerator.Repositories
             
             string basepath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
             
-            return new Uri(Path.Combine(basepath, filename)).LocalPath;
+            string path = Path.Combine(basepath, filename);
+
+            /* The default path should return a URI style file://c/foo path,
+             * check for that, and if not, fall back to to regular path handling.
+             */
+            if (path.StartsWith("file:", StringComparison.Ordinal))
+            {
+                try {
+                    return new Uri(path).LocalPath;
+                } catch (UriFormatException) {
+                    /* Neither windows nor Linux provide "well formed" URIs
+                     * as far as C# is concerned, but the Linux ones cause a
+                     * format exception, so let's catch that and try to correct
+                     * the formatting error.
+                     */
+                    path = path.Replace("file:", "file://");
+                    return new Uri(path).LocalPath;
+                }
+            }
+            
+            return Path.GetFullPath(path);
         }
         
         /// <summary>
