@@ -74,7 +74,7 @@ namespace DicewareGenerator
         /// </summary>
         public override string UpdateUrl
         {
-            get { return "https://raw.githubusercontent.com/robinmalburn/keepass-diceware-generator/master/DicewareGenerator/Resources/Version.txt"; }
+            get { return "https://raw.githubusercontent.com/robinmalburn/keepass-diceware-generator/master/Resources/Version.txt"; }
         }
     }
 }
