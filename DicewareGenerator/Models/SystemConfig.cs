@@ -58,7 +58,17 @@ namespace DicewareGenerator.Models
              */
             if (path.StartsWith("file:", StringComparison.Ordinal))
             {
-                return new Uri(path).LocalPath;    
+                 try {
+                    return new Uri(path).LocalPath;
+                } catch (UriFormatException) {
+                    /* Neither windows nor Linux provide "well formed" URIs
+                     * as far as C# is concerned, but the Linux ones cause a
+                     * format exception, so let's catch that and try to correct
+                     * the formatting error.
+                     */
+                    path = path.Replace("file:", "file://");
+                    return new Uri(path).LocalPath;
+                }    
             }
             
             return Path.GetFullPath(path);
