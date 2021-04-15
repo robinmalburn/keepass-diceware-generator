@@ -37,13 +37,27 @@ namespace DicewareGeneratorTests.Models
         /// Tests getting the path for a given filetype.
         /// </summary>
         [Test]
-        public void TestGetPathForFileType()
+        [TestCase("../../../Resources", "../../../Resources/special_chars.txt")]
+        [TestCase("file:c:/foo/bar/Resources", "c:/foo/bar/Resources/special_chars.txt")]
+        public void TestGetPathForFileType(string basepath, string expectedPath)
         {
             var sysConfig = new SystemConfig();
-            sysConfig.Basepath = "../../../Resources";
-            var expected = Path.GetFullPath("../../../Resources/special_chars.txt");
+            sysConfig.Basepath = basepath;
+            var expected = Path.GetFullPath(expectedPath);
             
             Assert.AreEqual(expected, sysConfig.GetPathForFileType(DicewareFileType.Special), "Assert that the expected path for a given filetype is returned.");
+        }
+        
+        /// <summary>
+        /// Tests getting a unix style path.
+        /// </summary>
+        [Test]
+        public void TestUnixPath()
+        {
+            var sysConfig = new SystemConfig();
+            sysConfig.Basepath = "file:/usr/lib";
+            
+            Assert.DoesNotThrow(() => sysConfig.GetPathForFileType(DicewareFileType.Special), "Assert that parsing a unix style path does not throw.");
         }
     }
 }
